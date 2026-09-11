@@ -120,6 +120,11 @@ address { font-style: normal; }
 hr { border: 0; border-block-start: var(--rule); margin: 0; }
 
 a { color: var(--terracotta); text-decoration-thickness: 1px; text-underline-offset: .18em; }
+
+/* A phone number is a left-to-right run whatever the surrounding text is.
+   Without this, Arabic bidi reorders the groups and +961 81 520 553 renders
+   as "553 520 81 961+", which is a number nobody can dial. */
+a[href^="tel:"] { unicode-bidi: isolate; direction: ltr; }
 a:hover { color: var(--terracotta-d); }
 
 :focus-visible {
