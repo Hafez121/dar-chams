@@ -292,7 +292,7 @@ window.DC_STRINGS = {
     "foot.getting": "كيف تصل",
     "foot.seasons": "فصلاً بعد فصل",
     "foot.map": "الخريطة والطريق",
-    "foot.follow": "تابعنا",
+    "foot.follow": "تواصل معنا",
     "foot.copy": "© 2026 دار شمس، دوما.",
     "foot.demo": "نموذج تجريبي · تصميم وتنفيذ",
 

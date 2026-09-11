@@ -15,6 +15,10 @@
 #      404 saved under a .webp name cannot pass
 #   5. the self-hosted fonts load over https (the thing file:// cannot do)
 #   6. the stylesheet, the scripts and the SEO files answer 200
+#   7. no retired identifier is still being served, and the real phone number
+#      is. Removing something from the repository is not the same as it being
+#      gone from the deployment, and this site was briefly live with invented
+#      contact details that resolved to real people.
 #
 # A new Pages site takes a minute or two to build, so check 1 retries for up
 # to five minutes before giving up. Everything after it runs once.
@@ -139,6 +143,34 @@ for f in css/style.css css/print.css js/i18n.js js/site.js \
   c=$(code_of "${BASE}${f}")
   [ "$c" = "200" ] && pass "$f -> 200" || fail "$f -> $c"
 done
+
+# -- 7. what is actually being served, not what is in the repository ----------
+echo
+echo "7. retired identifiers are gone from the served pages"
+# "~" stands in for a space so the list can stay a shell word list. Both the
+# dialling form and the printed form have to be here: the printed form is what
+# a human copies off the page.
+RETIRED="96171555019 71555019 +961~71~555~019 71~555~019 stay@darchams.com \
+instagram.com/darchams facebook.com/darchams Rue~du~Vieux~Souk 34.2172 35.8339 \
+Abou~Elias Douma~1304"
+PAGE_HTML=""
+for p in index.html rooms.html village.html contact.html js/i18n.js js/site.js; do
+  PAGE_HTML="$PAGE_HTML
+$(curl -sS -m 25 "${BASE}${p}" 2>/dev/null)"
+done
+for bad in $RETIRED; do
+  needle=$(printf '%s' "$bad" | tr '~' ' ')
+  if printf '%s' "$PAGE_HTML" | grep -qF "$needle"; then
+    fail "the live site still serves \"$needle\""
+  else
+    pass "not served: $needle"
+  fi
+done
+if printf '%s' "$PAGE_HTML" | grep -qF '96181520553'; then
+  pass "the current WhatsApp number is served"
+else
+  fail "the current WhatsApp number (96181520553) is NOT on the live site"
+fi
 
 echo
 if [ "$FAIL" -eq 0 ]; then
