@@ -1,0 +1,101 @@
+# Handoff
+
+What is finished, what is not, and what only a human can decide.
+
+## The one thing that must change before this is shown as finished
+
+**The photography.** Every image is an original illustration, not a photograph.
+The build environment blocked every stock-photo host at the egress proxy —
+Unsplash, Pexels, Wikimedia, Pixabay, Flickr, Openverse, picsum all returned
+`403` to the CONNECT; only Google Fonts and GitHub were reachable. The choice
+was between grey boxes and drawing something in the site's palette at the exact
+dimensions the layout needs, and I drew.
+
+The markup is already correct for real photographs: exact `width`/`height`,
+WebP first with a JPEG fallback, `fetchpriority="high"` above the fold and
+`loading="lazy"` below it. Swapping is a file replace, not a code change.
+`tools/fetch-photos.sh` does the resize, the EXIF strip and the WebP/JPEG pair;
+`README.md` lists every slot and its dimensions; `CREDITS.md` has the table to
+fill in.
+
+The prompt also asked for `cwebp` or ImageMagick and said to say so if neither
+was installed: **neither was installed.** The conversion is done with Python and
+Pillow instead, which produced WebP files of 7–35 KB and JPEGs of 24–82 KB, all
+well under the 150 KB ceiling. `tools/fetch-photos.sh` prefers `cwebp` and
+ImageMagick when they exist and falls back to Pillow when they do not.
+
+## Decisions a human has to make
+
+1. **The real WhatsApp number.** `+961 71 555 019` is invented. It appears in
+   `js/site.js` (`WA_NUMBER`), in every `tel:` link, in the static `href` of the
+   floating button on all four pages, and in the JSON-LD. Grep for `555019` and
+   `555 019`.
+2. **The real domain.** Canonical URLs, Open Graph URLs, the JSON-LD `url`, the
+   sitemap and `robots.txt` all point at
+   `https://hafez121.github.io/dar-chams/`, which is where GitHub Pages serves
+   this repository. If the site ships anywhere else, those absolute URLs need
+   updating — they are the only absolute URLs in the project, there is one
+   `sed` line for them in `README.md`, and everything else is a relative path
+   that moves freely.
+3. **`stay@darchams.com` and the social handles** (`instagram.com/darchams`,
+   `facebook.com/darchams`) are invented and may collide with something real.
+   Check before publishing.
+4. **The rates, the policies and the history** are invented but internally
+   consistent: $95 / $135 / $175 / $185, breakfast 8:00–10:30, check-in 15:00,
+   check-out 11:00, a two-night weekend minimum, free cancellation to seven
+   days, built 1874, restored over three winters, reopened 2023. Change one and
+   you must change it in `index.html`, `rooms.html`, `contact.html`, the room
+   `<select>` and the JSON-LD.
+5. **The geo coordinates** (34.2172 N, 35.8339 E) point at Douma village, not at
+   a surveyed address. Fix them against the real building.
+6. **Arabic proofreading by a second native speaker.** The Arabic is mine and it
+   is idiomatic Lebanese-flavoured MSA, but a hotel's own words deserve a second
+   pair of eyes — particularly the room names and the policy wording.
+
+## Known limits, deliberately accepted
+
+- **Self-hosted fonts do not load over `file://`.** Every browser blocks font
+  fetches from the `null` origin, so opening the HTML straight off disk falls
+  back to system type and logs two blocked requests. Everything else — images,
+  reveals, the form, the Arabic toggle — works from disk. Over HTTP there is
+  nothing in the console.
+- **`robots.txt` does nothing where the site currently lives.** A crawler reads
+  robots.txt only from the domain root — `https://hafez121.github.io/robots.txt`
+  — which is served by the `Hafez121.github.io` repository, not this one. The
+  file here is kept correct and written against the `/dar-chams/` prefix so it
+  works the day the site gets its own domain, and so its rules can be pasted
+  into the user-site robots.txt as they stand. Until then, `screenshots/` and
+  `tools/` are publicly reachable and crawlable. If that matters, move them out
+  of the published branch rather than relying on this file.
+
+- **No language `<link rel="alternate">` tags in the pages.** The Arabic version
+  lives at the same URL with `?lang=ar`, which is declared in `sitemap.xml` via
+  `xhtml:link`, but search engines may still index only the English text since
+  the Arabic is applied client-side. A server-rendered `/ar/` tree would be the
+  correct answer at real scale; it is out of scope for a four-page static demo.
+- **With JavaScript disabled the site is English-only.** Everything else works:
+  every page is complete in the markup, the navigation is a plain list, the
+  floating WhatsApp button is a real link with a prefilled message, and the
+  enquiry form shows a `<noscript>` block pointing at WhatsApp, the email
+  address and the phone number. The Arabic toggle is the one feature that
+  cannot work without JS.
+- **The date inputs are `type="date"`,** so their internal format follows the
+  device locale rather than the page language. That is the correct trade: it
+  gives the native picker and the right mobile keyboard. The composed WhatsApp
+  message always spells the month out (`14 March 2027` / `14 آذار 2027`), so
+  nothing is ambiguous by the time a human reads it.
+- **One inline `style` attribute** remains, on the contact page's `#map`
+  heading, to set its top margin. Move it into `css/style.css` if that offends.
+- **The one tap target under 44 px** is the "Open in OpenStreetMap" link, which
+  sits inline inside a sentence — WCAG 2.5.8 exempts inline text links, and
+  padding it out would break the paragraph.
+
+## What was checked, and how
+
+Everything in the "Checks that were run" section of `README.md` was run against
+a headless Chromium on every page in both languages, and everything it found
+was fixed rather than noted. There are no known failures outstanding.
+
+Screenshots are in `screenshots/`: four pages at 390 px and at 1440 px, the
+contact page with the enquiry form filled in at both widths, and the Arabic
+build of the home, rooms, village and contact pages.

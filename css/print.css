@@ -1,0 +1,40 @@
+/* Print stylesheet for the contact page: what a guest actually needs on paper
+   — the address, the phone number, the directions and the map. */
+@page { margin: 18mm; }
+
+.site-head, .wa-fab, .site-foot__nav, .site-foot__social,
+.skip-link, .social-row, .form-status, .field__error,
+#waFallback, .enquiry__intro, .contact-grid .btn { display: none !important; }
+
+body { background: #fff; color: #000; font-size: 11pt; line-height: 1.45; }
+.wrap { max-inline-size: none; padding-inline: 0; }
+.section, .page-head { padding-block: 0; }
+.contact-grid { display: block; }
+.enquiry { background: none; border: 0; padding: 0; }
+
+h1 { font-size: 24pt; margin-block: 0 6pt; }
+h2 { font-size: 14pt; margin-block: 14pt 4pt; page-break-after: avoid; }
+.eyebrow { font-size: 9pt; letter-spacing: .1em; }
+.lead { font-size: 12pt; }
+
+/* the form prints as a fill-in-by-hand slip */
+.field label { font-size: 10pt; font-weight: 700; }
+.field input, .field select, .field textarea {
+  border: 0;
+  border-block-end: 1px solid #666;
+  border-radius: 0;
+  background: none;
+  min-block-size: 0;
+  padding: 2pt 0;
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt 18pt; }
+
+.contact-list li { border-block-start: 1px solid #ccc; padding-block: 5pt; }
+.contact-list__k { font-size: 8.5pt; letter-spacing: .08em; }
+a { color: #000; text-decoration: none; }
+/* spell the destination out - a printed link is useless otherwise */
+.contact-list a::after, .map__note a::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
+.contact-list a[href^="tel:"]::after, .contact-list a[href^="mailto:"]::after { content: ""; }
+.map { border: 1px solid #999; page-break-inside: avoid; }
+.map svg { inline-size: 100%; }
+.form-note { font-size: 10pt; }

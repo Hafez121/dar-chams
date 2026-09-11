@@ -1,0 +1,13 @@
+# The site is published at https://hafez121.github.io/dar-chams/ , so this file
+# is served at .../dar-chams/robots.txt — crawlers only read robots.txt from the
+# domain root, which belongs to the Hafez121.github.io repository. These rules
+# therefore do nothing today; they are written against the /dar-chams/ prefix so
+# they are correct if the site moves to its own domain, and so they can be
+# pasted into the user-site robots.txt as they stand.
+
+User-agent: *
+Allow: /dar-chams/
+Disallow: /dar-chams/screenshots/
+Disallow: /dar-chams/tools/
+
+Sitemap: https://hafez121.github.io/dar-chams/sitemap.xml

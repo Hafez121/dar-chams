@@ -1,0 +1,14 @@
+# Only operating-system and editor noise is ignored.
+#
+# Nothing that the site needs is ignored: img/, fonts/, css/, js/ and
+# screenshots/ are all committed on purpose. This project has no build step, so
+# what is in the repository is exactly what is served.
+
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/*
+!.vscode/extensions.json
+.idea/
