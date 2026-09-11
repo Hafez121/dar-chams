@@ -105,9 +105,9 @@
   }
 
   /* ------------------------------------------------------- WhatsApp basics */
-  /* DEMO NUMBER — +961 71 555 019 is fictional and used only for this concept
+  /* DEMO NUMBER — +961 81 520 553 is fictional and used only for this concept
      demo. Replace WA_NUMBER (and every tel: link) with the real one. */
-  var WA_NUMBER = "96171555019";
+  var WA_NUMBER = "96181520553";
 
   function waUrl(text) {
     return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);

@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------------------
 # Dar Chams — put real photographs into img/
 #
-#   tools/fetch-photos.sh <folder-of-photos>
+#   tools/fetch-photos.sh [folder-of-photos]      (default: img/incoming)
 #
 # For every slot the site uses, this looks for a source file whose name starts
 # with the slot name (hero-village.jpg, hero-village-2.png, hero_village.HEIC…),
@@ -14,11 +14,17 @@
 # ---------------------------------------------------------------------------
 set -eu
 
-SRC=${1:-}
 DEST=$(CDPATH= cd -- "$(dirname -- "$0")/../img" && pwd)
+SRC=${1:-$DEST/incoming}
 
-if [ -z "$SRC" ] || [ ! -d "$SRC" ]; then
-  echo "usage: tools/fetch-photos.sh <folder-of-photos>" >&2
+if [ ! -d "$SRC" ]; then
+  echo "usage: tools/fetch-photos.sh [folder-of-photos]   (default: img/incoming)" >&2
+  exit 2
+fi
+if [ -z "$(find "$SRC" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
+           -o -iname '*.webp' -o -iname '*.tif' -o -iname '*.tiff' -o -iname '*.heic' \) 2>/dev/null)" ]; then
+  echo "No photographs found in $SRC — nothing to do." >&2
+  echo "Drop files named after the image slots (see README.md) and run this again." >&2
   exit 2
 fi
 

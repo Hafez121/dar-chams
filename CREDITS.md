@@ -61,5 +61,7 @@ the site makes no third-party request. The OFL permits this.
 
 ## Icons
 
-The WhatsApp, Instagram and Facebook glyphs and the Dar Chams mark are drawn as
-inline SVG paths in this repository. No icon font, no icon library.
+The WhatsApp glyph and the Dar Chams mark are drawn as inline SVG paths in this
+repository. No icon font, no icon library. The Instagram and Facebook glyphs
+were removed along with the invented social links; their markup is in git
+history at commit 772baf3 if the real accounts ever need them back.

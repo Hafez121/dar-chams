@@ -26,10 +26,13 @@ ImageMagick when they exist and falls back to Pillow when they do not.
 
 ## Decisions a human has to make
 
-1. **The real WhatsApp number.** `+961 71 555 019` is invented. It appears in
-   `js/site.js` (`WA_NUMBER`), in every `tel:` link, in the static `href` of the
-   floating button on all four pages, and in the JSON-LD. Grep for `555019` and
-   `555 019`.
+1. **The WhatsApp number is now real.** `+961 81 520 553`, supplied by the
+   owner, replaced the invented `+961 71 555 019` everywhere: `js/site.js`
+   (`WA_NUMBER`), every `tel:` link, the floating button's static `href` on all
+   four pages, the contact page's `noscript` fallback, the contact meta
+   description, the Arabic strings and the JSON-LD. Grep for `520553` and
+   `520 553` to change it again. Treat it as live: it is the only way anyone can
+   reach the house from this site.
 2. **The real domain.** Canonical URLs, Open Graph URLs, the JSON-LD `url`, the
    sitemap and `robots.txt` all point at
    `https://hafez121.github.io/dar-chams/`, which is where GitHub Pages serves
@@ -37,20 +40,54 @@ ImageMagick when they exist and falls back to Pillow when they do not.
    updating — they are the only absolute URLs in the project, there is one
    `sed` line for them in `README.md`, and everything else is a relative path
    that moves freely.
-3. **`stay@darchams.com` and the social handles** (`instagram.com/darchams`,
-   `facebook.com/darchams`) are invented and may collide with something real.
-   Check before publishing.
+3. **Email and social links have been removed, not replaced.** The invented
+   address `stay@darchams.com` sat on a domain registered to a third party, and
+   `instagram.com/darchams` / `facebook.com/darchams` resolved to unrelated
+   people's accounts. All of them are gone from the markup, the Arabic strings
+   and the JSON-LD. `TODO` comments mark every place a real one goes: the footer
+   of all four pages, the contact page's social row and contact list, and the
+   `email` / `sameAs` fields of the JSON-LD. **Confirm an account exists before
+   linking it.** Guessing a handle from the business name is what caused this.
 4. **The rates, the policies and the history** are invented but internally
    consistent: $95 / $135 / $175 / $185, breakfast 8:00–10:30, check-in 15:00,
    check-out 11:00, a two-night weekend minimum, free cancellation to seven
    days, built 1874, restored over three winters, reopened 2023. Change one and
    you must change it in `index.html`, `rooms.html`, `contact.html`, the room
    `<select>` and the JSON-LD.
-5. **The geo coordinates** (34.2172 N, 35.8339 E) point at Douma village, not at
-   a surveyed address. Fix them against the real building.
+5. **Geo coordinates and the street address have been removed.** The JSON-LD
+   no longer carries a `geo` block, a `streetAddress` or a `postalCode`: the
+   coordinates were village-level rather than surveyed, `Rue du Vieux Souk` is
+   not how a Lebanese address is written, and `1304` was an invented postal
+   code. The address is now `Douma, Batroun District, North Lebanon`
+   everywhere. The contact page no longer claims that Google Maps and Waze
+   return a result for the guesthouse — they do not, because it does not exist.
+   Add a `geo` block and a fuller address once there is a real building to
+   survey.
 6. **Arabic proofreading by a second native speaker.** The Arabic is mine and it
    is idiomatic Lebanese-flavoured MSA, but a hotel's own words deserve a second
    pair of eyes — particularly the room names and the policy wording.
+
+## What was removed, and why
+
+This site was publicly reachable for a while carrying invented identifiers that
+turned out to belong to real people. Everything below has been taken out. None
+of it should be reintroduced by guesswork.
+
+| Invented | Where it was | Now |
+|---|---|---|
+| `+961 71 555 019` | every page, JSON-LD, `js/site.js`, Arabic strings | replaced with the owner's real number |
+| `stay@darchams.com` | footers, contact list, form note, `noscript`, JSON-LD | removed; `TODO` left in place |
+| `instagram.com/darchams` | four footers, contact social row, JSON-LD `sameAs` | removed; `TODO` left in place |
+| `facebook.com/darchams` | four footers, contact social row, JSON-LD `sameAs` | removed; `TODO` left in place |
+| `Rue du Vieux Souk` | four footers, contact list, JSON-LD `streetAddress` | `Douma, Batroun District, North Lebanon` |
+| postal code `1304` | contact list, JSON-LD | removed |
+| `34.2172 N, 35.8339 E` | JSON-LD `geo`, contact page, OpenStreetMap deep link | removed |
+| "Google Maps and Waze find Dar Chams Douma" | contact page map note | removed — a false claim about real services |
+| `Abou Elias` (restaurant) | home page copy, Arabic strings | "the grill house on the square" |
+
+Place names that remain — Douma, Batroun, Bchaaleh, Baatara, Tannourine,
+Byblos, Beirut — are real geography, not businesses or people, and the site
+makes no claim about any of them beyond distances and directions.
 
 ## Known limits, deliberately accepted
 

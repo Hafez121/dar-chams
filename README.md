@@ -93,10 +93,19 @@ and in Arabic:
 
 If the pop-up is blocked, a fallback link appears carrying the same URL.
 
-**The number `+961 71 555 019` is invented.** It appears in `js/site.js`
-(`WA_NUMBER`), in every `tel:` link, in the floating button's static `href`,
-and in the `Hotel` JSON-LD. Search for `555019` and `555 019` to replace them
-all.
+**The number `+961 81 520 553` is the real one** and is the single contact
+route on the site. It appears in `js/site.js` (`WA_NUMBER`), in every `tel:`
+link, in the floating button's static `href`, in the contact page's `noscript`
+fallback, and in the `Hotel` JSON-LD. To change it, grep for `520553` and
+`520 553` — that catches all of them.
+
+There is deliberately **no email address and no social link** on the site. An
+earlier draft carried invented ones; the handles resolved to unrelated
+third-party accounts and the mail domain belongs to somebody else, so they were
+removed rather than guessed at again. `TODO` comments mark the exact places to
+put the real ones — in the footer of all four pages, in the contact page's
+social row and contact list, and in the `sameAs` and `email` fields of the
+JSON-LD. Do not invent a replacement: confirm the account exists first.
 
 ## Swapping in real photography
 
