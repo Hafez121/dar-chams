@@ -1,0 +1,26 @@
+# Verifies the DEPLOYED site, from a runner that can actually reach it.
+#
+# Runs automatically every time GitHub Pages finishes a build, and on demand
+# from the Actions tab. tools/verify-live.sh is the same script you can run
+# locally; it waits up to five minutes for a first deploy before giving up.
+name: Verify live site
+
+on:
+  page_build:            # fires when Pages finishes publishing a branch build
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Base URL to verify
+        required: false
+        default: https://hafez121.github.io/dar-chams/
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify the deployed site
+        run: sh tools/verify-live.sh "${{ inputs.base_url || 'https://hafez121.github.io/dar-chams/' }}"

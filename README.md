@@ -35,9 +35,10 @@ dar-chams/
 ├── img/                artwork, .webp with a .jpg fallback for each
 ├── fonts/              self-hosted woff2 subsets (no Google Fonts request)
 ├── tools/
-│   ├── make_images.py  regenerates the placeholder artwork
-│   ├── fetch-photos.sh downloads and processes real photography
-│   └── screenshots.cjs captures the review screenshots
+│   ├── make_images.py   regenerates the placeholder artwork
+│   ├── fetch-photos.sh  downloads and processes real photography
+│   ├── screenshots.cjs  captures the review screenshots
+│   └── verify-live.sh   checks the deployed site, not the local copy
 ├── screenshots/        390 px and 1440 px full-page captures, EN and AR
 ├── favicon.svg · favicon-32.png · apple-touch-icon.png
 ├── robots.txt · sitemap.xml
@@ -199,6 +200,28 @@ exception no static site can avoid: browsers refuse to load self-hosted
 webfonts over `file://` (a CORS check against the `null` origin), so the type
 falls back to the system serif and sans and the console shows two blocked font
 requests. Serve it over HTTP to see it as designed.
+
+## Verifying the deployed site
+
+Local checks prove the files are right; they say nothing about what GitHub
+Pages actually serves. `tools/verify-live.sh` checks the deployment itself:
+
+```sh
+tools/verify-live.sh                       # defaults to the published URL
+tools/verify-live.sh https://example.test/  # or anywhere else
+```
+
+It waits up to five minutes for a first deploy, then confirms the base URL
+answers 200 and is really `index.html` (a Pages 404 is also HTML), that all
+four pages answer 200, that images return image **bytes** — content-type *and*
+magic number, so an error page saved under a `.webp` name cannot pass — that
+the five self-hosted fonts return `wOF2` over https, and that the CSS, the
+scripts, `robots.txt` and `sitemap.xml` all resolve. It exits with the number
+of failures.
+
+`.github/workflows/verify-live.yml` runs the same script on every Pages build,
+so a broken deploy shows up in the Actions tab without anyone remembering to
+look.
 
 ## Moving the site
 
