@@ -110,9 +110,10 @@ JSON-LD. Do not invent a replacement: confirm the account exists first.
 
 ## The photographs, and the image slots
 
-Nine photographs were delivered; eight are in use and one was rejected (see
-`CREDITS.md`). Every image on the site is a photograph — there are no generated
-illustrations left anywhere.
+Nine photographs were delivered; eight are in use and credited in `CREDITS.md`.
+The ninth was rejected — the reason is in `HANDOFF.md`, not `CREDITS.md`, since
+an unused photograph does not get a credit. Every image on the site is a
+photograph; there are no generated illustrations left anywhere.
 
 ```
 img/hero-valley     940×588    home hero — terraced hillsides in late light

@@ -1,59 +1,40 @@
 # Image credits
 
 Every image on the site is a photograph. The generated illustrations that stood
-in for them until now have been deleted; they are in git history up to commit
-`e72ca1d` if anyone needs to see what was there before.
+in for them have been deleted; they are in git history up to commit `e72ca1d`.
 
-## Attribution
+All attributions below were opened and verified. Unsplash and Pexels both allow
+commercial use without attribution — these credits are courtesy, and a record
+of what is actually in use.
 
-Five of the nine delivered files still carried their download filenames, which
-encode the photographer and the photo ID. Those are recorded below. **Four did
-not, and I could not identify them** — including the one now used as the home
-page hero. Those rows have to be completed by hand before this site is shown
-anywhere public: an unattributed photograph is a licensing problem waiting to
-happen, whatever its source.
+## Photographs
 
-The URLs below are reconstructed from the delivered filenames. This build
-environment has no network access to Unsplash or Pexels, so **none of them has
-been opened and confirmed** — check each one before relying on it.
+| On the site | Where it appears | Credit |
+|---|---|---|
+| `img/hero-valley` | home page hero, and cropped to `img/og-cover` for the social card on all four pages | Photo by [Ali Hamada](https://unsplash.com/@alihamada32) on [Unsplash](https://unsplash.com/photos/0O2NJiYtP7w) |
+| `img/roof-tiles` | home page, *The house* | Photo by [Barış Türköz](https://www.pexels.com/@baris-turkoz-214377915/) on Pexels — photo ID `34802849` |
+| `img/terrace` | home page, *What a day here looks like* | Photo by [Patricia Jekki](https://unsplash.com/@jekkiliciouss) on [Unsplash](https://unsplash.com/photos/ND1FSqlzFG4) |
+| `img/room-linen` | rooms page head | Photo by [Susan Wilkinson](https://unsplash.com/@susan_wilkinson) on [Unsplash](https://unsplash.com/photos/gSOdp7YlgNQ) |
+| `img/shutters` | rooms page, the band between the room types and the rates | Photo by [Maria Lin Kim](https://unsplash.com/@mrsmaria) on [Unsplash](https://unsplash.com/photos/z5eHJ6iLVIk) |
+| `img/olive-branch` | village page, *The olive terraces* | Photo by [Frank Albrecht](https://unsplash.com/@shotaspot) on [Unsplash](https://unsplash.com/photos/k-ICgGQLdkM) |
+| `img/stone-steps` | village page, *The stairs and the roofs* | Photo by [Nicolas Hoch](https://unsplash.com/@nico67xvi) on [Unsplash](https://unsplash.com/photos/iBiRuI5AKYY) |
+| `img/valley-road` | village page, *Getting here* | Photo by [Ahmad Bader](https://unsplash.com/@palo1987) on [Unsplash](https://unsplash.com/photos/YpaZ13PbkWM) |
 
-| Slot | Photographer | Source | Delivered filename |
-|---|---|---|---|
-| `img/hero-valley` | **unknown — must be identified** | — | `valley-dusk.jpg` |
-| `img/roof-tiles` | Baris Turkoz | Pexels, photo `34802849` — `https://www.pexels.com/photo/34802849/` | `pexels-baris-turkoz-214377915-34802849.jpg` |
-| `img/terrace` | **unknown — must be identified** | — | `terrace.jpg` |
-| `img/room-linen` | Susan Wilkinson | Unsplash, photo `gSOdp7YlgNQ` — `https://unsplash.com/photos/gSOdp7YlgNQ` | `susan-wilkinson-gSOdp7YlgNQ-unsplash.jpg` |
-| `img/shutters` | Maria Lin Kim | Unsplash, photo `z5eHJ6iLVIk` — `https://unsplash.com/photos/z5eHJ6iLVIk` | `maria-lin-kim-z5eHJ6iLVIk-unsplash.jpg` |
-| `img/olive-branch` | Frank Albrecht | Unsplash, photo `k-ICgGQLdkM` — `https://unsplash.com/photos/k-ICgGQLdkM` | `frank-albrecht-k-ICgGQLdkM-unsplash.jpg` |
-| `img/stone-steps` | **unknown — must be identified** | — | `stone-steps.jpg` |
-| `img/valley-road` | **unknown — must be identified** | — | `hero-village.jpg` |
-| `img/og-cover` | same photograph as `hero-valley` | — | — |
+Eight photographs, eight slots, no photograph used twice. `img/og-cover` is a
+1200×630 crop of the hero rather than a ninth image.
 
-Unsplash and Pexels both permit commercial use without attribution; crediting
-the photographer is courtesy rather than obligation. Knowing *which* photograph
-you are using is not optional either way.
-
-## Not used
-
-**`stone-wall.jpg`** — Nicole Moore, Unsplash, photo `1yV65pbzhU4`. Moved to
-`img/incoming/rejected/`. Two independent reasons:
-
-1. **It carries a burned-in watermark** — "Nicole Moore PHOTOGRAPHY" across the
-   lower third of the frame. The Unsplash licence permits the use; publishing
-   another photographer's branding across a guesthouse's own website is still
-   not something to do.
-2. **It is not Lebanon.** Grey fieldstone rubble walling, a red brick arch, a
-   cedar-shingle roof and North American maple leaves on the ground. Lebanese
-   village building is pale limestone with clay tile. It would have read as
-   wrong to anyone who knows the country, which is the client.
+The delivered filenames were not the slot names — `valley-dusk.jpg` became the
+hero, `hero-village.jpg` became `valley-road` — so the originals are kept in
+`img/incoming/` under their slot names, and the mapping is recorded in the
+commit that made it (`4521bc8`).
 
 ## Crops
 
 Two files were cropped by hand before the pipeline rather than centre-cropped:
 
-- **`room-linen`** — taken from the left 86% and lower 84% of the frame, to
-  keep the bed, the light and the side table while leaving a framed floral
-  print on the right-hand wall out of shot.
+- **`room-linen`** — the left 86% and lower 84% of the frame, to keep the bed,
+  the light and the side table while leaving a framed floral print on the
+  right-hand wall out of shot.
 - **`og-cover`** — a 1200×630 letterbox of the hero photograph.
 
 Everything else is a centre crop to the slot's ratio, done by

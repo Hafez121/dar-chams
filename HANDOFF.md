@@ -2,23 +2,30 @@
 
 What is finished, what is not, and what only a human can decide.
 
-## What is still open on the photography
+## Photography
 
-Nine photographs were delivered and eight are in use. Every generated
-illustration has been deleted. Three things remain:
+Nine photographs were delivered, eight are in use, and every generated
+illustration has been deleted. **Attribution is complete**: all eight are
+credited in `CREDITS.md` against profile and photo links that have been opened
+and verified. Nothing is outstanding here.
 
-1. **Four of the eight are unattributed.** `hero-valley` (the home page hero),
-   `terrace`, `stone-steps` and `valley-road` arrived with generic filenames,
-   so there is no photographer and no source URL for them. The other four kept
-   their download filenames and are credited in `CREDITS.md`. Identify the four
-   before this is shown publicly — the hero above all.
-2. **The reconstructed URLs are unverified.** This environment cannot reach
-   Unsplash or Pexels, so every link in `CREDITS.md` was rebuilt from a
-   filename and none has been opened. Check them.
-3. **`stone-wall.jpg` was rejected** and sits in `img/incoming/rejected/`. It
-   carries a burned-in "Nicole Moore PHOTOGRAPHY" watermark, and it is not
-   Lebanese architecture — grey fieldstone, a brick arch, cedar shingles and
-   maple leaves. Both reasons are in `CREDITS.md`.
+One delivered file is not used. **`stone-wall.jpg`** sits in
+`img/incoming/rejected/` and is deliberately absent from `CREDITS.md` — there
+is no sense in crediting a photograph nobody can see. It was rejected for two
+independent reasons:
+
+1. **A burned-in watermark** — "Nicole Moore PHOTOGRAPHY" across the lower
+   third of the frame. The licence permits the use; publishing another
+   photographer's branding across a guesthouse's own website is still not
+   something to do.
+2. **It is not Lebanon.** Grey fieldstone rubble walling, a red brick arch, a
+   cedar-shingle roof and North American maple leaves on the ground. Lebanese
+   village building is pale limestone with clay tile. It would have read as
+   wrong to anyone who knows the country, which is the client.
+
+If it is ever replaced with an unwatermarked Lebanese equivalent, the slot it
+would have filled is the village page head, which currently carries no
+photograph.
 
 ## Claims and photographs
 
