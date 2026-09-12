@@ -44,6 +44,12 @@ og-cover:1200:630"
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# The slot loop below runs in a subshell, so matched files are recorded in a
+# file rather than a variable. Anything left over is reported at the end: a
+# photograph that matches no slot must never be dropped in silence.
+USED=$(mktemp); OVER=$(mktemp); trap 'rm -f "$USED" "$OVER"' EXIT INT TERM
+OVERSIZE=0
+
 if have magick;      then IM="magick";
 elif have convert;   then IM="convert";
 else                      IM=""; fi
@@ -76,6 +82,7 @@ echo "$SLOTS" | while IFS=: read -r name w h; do
     echo "  MISSING  $name  (${w}x${h}) — keeping the current placeholder"
     continue
   fi
+  printf '%s\n' "$found" >> "$USED"
 
   # a 404 page saved with an image extension is not an image
   if ! head -c 12 "$found" | od -An -tx1 | grep -Eq 'ff d8 ff|89 50 4e 47|52 49 46 46|49 49 2a|4d 4d 00'; then
@@ -105,21 +112,68 @@ clean.save(out + ".webp", "WEBP", quality=80, method=6)
 PY
   fi
 
-  # keep every file under the 150 KB ceiling
+  # Keep every file under the 150 KB ceiling. The ladder goes down to q=34;
+  # a photograph that will not fit even there is reported, never shipped in
+  # silence at four times the budget.
   for f in "$DEST/$name.jpg" "$DEST/$name.webp"; do
-    q=78
-    while [ "$(wc -c < "$f")" -gt 153600 ] && [ "$q" -ge 50 ]; do
+    q=82
+    while [ "$(wc -c < "$f")" -gt 153600 ] && [ "$q" -ge 34 ]; do
       case "$f" in
         *.webp) if [ "$CWEBP" -eq 1 ]; then cwebp -quiet -q "$q" -m 6 "$DEST/$name.jpg" -o "$f";
                 else python3 -c "from PIL import Image;i=Image.open('$DEST/$name.jpg');i.save('$f','WEBP',quality=$q,method=6)"; fi ;;
         *)      if [ -n "$IM" ]; then $IM "$f" -quality "$q" "$f";
                 else python3 -c "from PIL import Image;i=Image.open('$f');i.save('$f','JPEG',quality=$q,optimize=True,progressive=True)"; fi ;;
       esac
-      q=$((q - 8))
+      q=$((q - 6))
     done
-    printf '  %-14s %s  %s KB\n' "$name" "$(basename "$f")" "$(( $(wc -c < "$f") / 1024 ))"
+    kb=$(( $(wc -c < "$f") / 1024 ))
+    if [ "$kb" -gt 150 ]; then
+      printf '  %-14s %-22s %s KB  ** OVER THE 150 KB BUDGET **\n' "$name" "$(basename "$f")" "$kb"
+      echo x >> "$OVER"
+    else
+      printf '  %-14s %-22s %s KB\n' "$name" "$(basename "$f")" "$kb"
+    fi
   done
 done
+
+# ---------------------------------------------------------------------------
+# Anything in the source folder that matched no slot. These are not errors —
+# a set of detail crops will not be named after the slots a layout happens to
+# have - but they must be listed, because a silently ignored photograph looks
+# exactly like a photograph that was used.
+echo
+UNMATCHED=0
+for f in "$SRC"/*; do
+  [ -f "$f" ] || continue
+  case "$f" in *.md|*.txt|*.json) continue ;; esac
+  if ! grep -qxF "$f" "$USED" 2>/dev/null; then
+    [ "$UNMATCHED" -eq 0 ] && echo "Not used — these matched no slot:"
+    UNMATCHED=$((UNMATCHED + 1))
+    base=$(basename "$f")
+    stem=${base%.*}
+    # a near miss is worth pointing at: stone-steps vs the stone-stair slot
+    near=$(echo "$SLOTS" | cut -d: -f1 | awk -v s="$stem" '
+      { a = $0; n = 0
+        for (i = 1; i <= length(s) && i <= length(a); i++)
+          if (substr(s, i, 1) == substr(a, i, 1)) n++
+        if (n > best && n >= 5) { best = n; hit = a } }
+      END { if (hit != "") print hit }')
+    if [ -n "$near" ]; then
+      echo "    $base   (did you mean the \"$near\" slot? rename it, or change the slot list)"
+    else
+      echo "    $base"
+    fi
+  fi
+done
+[ "$UNMATCHED" -eq 0 ] && echo "Every file in $SRC was used."
+
+n_over=$(wc -l < "$OVER" 2>/dev/null | tr -d ' ')
+if [ "${n_over:-0}" -gt 0 ]; then
+  echo
+  echo "$n_over file(s) are over the 150 KB budget even at the lowest quality on the"
+  echo "ladder. Do not ship them as they are. Either crop the source tighter, or"
+  echo "reduce the slot's declared dimensions in this script and in the markup."
+fi
 
 echo
 echo "Done. Now fill in CREDITS.md with the photographer and source URL for each"
