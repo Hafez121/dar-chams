@@ -1,33 +1,55 @@
-/* Screenshots for review. Needs a static server on the site root and a
-   Chromium build:
+/* Screenshots for review.
+
+   Against the deployed site, which is what the captures in screenshots/ are
+   taken from — see .github/workflows/screenshots.yml, which runs this on a
+   runner that can reach it:
+     BASE_URL=https://hafez121.github.io/dar-chams/ node tools/screenshots.cjs
+
+   Against a local copy:
      python3 -m http.server 8123
      NODE_PATH=$(npm root -g) node tools/screenshots.cjs
-   Override with BASE_URL and CHROME_PATH if your paths differ, e.g.
-     BASE_URL=http://127.0.0.1:8123/dar-chams/ node tools/screenshots.cjs */
-const CHROME = process.env.CHROME_PATH || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
-const BASE = process.env.BASE_URL || 'http://127.0.0.1:8123/';
-const { chromium } = require((process.env.NODE_PATH || '') + '/playwright-core');
 
+   CHROME_PATH points at a browser binary when using playwright-core; with the
+   full playwright package installed it is not needed. */
+const BASE = process.env.BASE_URL || 'http://127.0.0.1:8123/';
+
+// Resolve Playwright from whichever is installed: the full package (CI, which
+// manages its own browser) or playwright-core with a browser path supplied.
+let chromium;
+try {
+  ({ chromium } = require('playwright'));
+} catch (e) {
+  ({ chromium } = require((process.env.NODE_PATH || '') + '/playwright-core'));
+}
+const LAUNCH = process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {};
+
+// Four pages x two languages x two widths, plus the enquiry form filled in at
+// both widths in both languages. Full-page captures.
 const SHOTS = [
-  ['01-home-1440',            'index.html',   1440],
-  ['02-home-390',             'index.html',    390],
-  ['03-rooms-1440',           'rooms.html',   1440],
-  ['04-rooms-390',            'rooms.html',    390],
-  ['05-village-1440',         'village.html', 1440],
-  ['06-village-390',          'village.html',  390],
-  ['07-contact-1440',         'contact.html', 1440],
-  ['08-contact-390',          'contact.html',  390],
-  ['09-contact-filled-1440',  'contact.html', 1440, { fill: true }],
-  ['10-contact-filled-390',   'contact.html',  390, { fill: true }],
-  ['11-contact-ar-filled-1440','contact.html?lang=ar', 1440, { fill: true, ar: true }],
-  ['12-home-ar-1440',         'index.html?lang=ar', 1440],
-  ['13-home-ar-390',          'index.html?lang=ar',  390],
-  ['14-rooms-ar-1440',        'rooms.html?lang=ar', 1440],
-  ['15-village-ar-390',       'village.html?lang=ar', 390]
+  ['01-home-1440',              'index.html',           1440],
+  ['02-home-390',               'index.html',            390],
+  ['03-rooms-1440',             'rooms.html',           1440],
+  ['04-rooms-390',              'rooms.html',            390],
+  ['05-village-1440',           'village.html',         1440],
+  ['06-village-390',            'village.html',          390],
+  ['07-contact-1440',           'contact.html',         1440],
+  ['08-contact-390',            'contact.html',          390],
+  ['09-contact-filled-1440',    'contact.html',         1440, { fill: true }],
+  ['10-contact-filled-390',     'contact.html',          390, { fill: true }],
+  ['11-home-ar-1440',           'index.html?lang=ar',   1440],
+  ['12-home-ar-390',            'index.html?lang=ar',    390],
+  ['13-rooms-ar-1440',          'rooms.html?lang=ar',   1440],
+  ['14-rooms-ar-390',           'rooms.html?lang=ar',    390],
+  ['15-village-ar-1440',        'village.html?lang=ar', 1440],
+  ['16-village-ar-390',         'village.html?lang=ar',  390],
+  ['17-contact-ar-1440',        'contact.html?lang=ar', 1440],
+  ['18-contact-ar-390',         'contact.html?lang=ar',  390],
+  ['19-contact-ar-filled-1440', 'contact.html?lang=ar', 1440, { fill: true, ar: true }],
+  ['20-contact-ar-filled-390',  'contact.html?lang=ar',  390, { fill: true, ar: true }]
 ];
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: CHROME });
+  const browser = await chromium.launch(LAUNCH);
   for (const [name, path, width, opt = {}] of SHOTS) {
     const ctx = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: width < 500 ? 2 : 1 });
     const page = await ctx.newPage();

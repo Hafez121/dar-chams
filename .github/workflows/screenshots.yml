@@ -1,0 +1,84 @@
+# Recaptures screenshots/ from the DEPLOYED site and commits them.
+#
+# This runs here rather than locally for one reason: the captures should show
+# what GitHub Pages actually serves, not what a local server does. Run it from
+# the Actions tab after a change that alters how any page looks.
+name: Capture screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Site to capture
+        required: false
+        default: https://hafez121.github.io/dar-chams/
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.56.0
+          npx playwright install --with-deps chromium
+
+      - name: Confirm the site is up before capturing
+        run: |
+          URL="${{ inputs.base_url || 'https://hafez121.github.io/dar-chams/' }}"
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -m 30 "$URL")
+          echo "$URL -> $code"
+          [ "$code" = "200" ] || { echo "Site is not serving 200; refusing to capture." >&2; exit 1; }
+
+      - name: Capture
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://hafez121.github.io/dar-chams/' }}
+        run: |
+          rm -f screenshots/*.png          # names changed; do not leave stale files
+          mkdir -p screenshots
+          node tools/screenshots.cjs
+
+      - name: Shrink the PNGs
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          import glob, os
+          from PIL import Image
+          total = 0
+          for f in sorted(glob.glob('screenshots/*.png')):
+              im = Image.open(f).convert('RGB')
+              im.quantize(colors=192).save(f, 'PNG', optimize=True)
+              total += os.path.getsize(f)
+              print(f'{f}  {im.size[0]}x{im.size[1]}  {os.path.getsize(f)//1024} KB')
+          print(f'{len(glob.glob("screenshots/*.png"))} files, {total//1024//1024} MB')
+          PY
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A screenshots
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -F - <<MSG
+          Recapture screenshots from the deployed site
+
+          Twenty full-page captures of ${BASE_URL}, taken by
+          .github/workflows/screenshots.yml on a runner that can reach it: four
+          pages at 390px and 1440px in both languages, plus the enquiry form
+          filled in at both widths in both languages.
+          MSG
+          git push
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://hafez121.github.io/dar-chams/' }}
