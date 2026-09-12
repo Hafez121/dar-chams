@@ -190,6 +190,21 @@ Everything in the "Checks that were run" section of `README.md` was run against
 a headless Chromium on every page in both languages, and everything it found
 was fixed rather than noted. There are no known failures outstanding.
 
-Screenshots are in `screenshots/`: four pages at 390 px and at 1440 px, the
-contact page with the enquiry form filled in at both widths, and the Arabic
-build of the home, rooms, village and contact pages.
+### Screenshots
+
+The twenty captures in `screenshots/` are taken **from the deployed site**, not
+from a local copy: four pages at 390 px and 1440 px in both languages, plus the
+enquiry form filled in at both widths in both languages. The 390 px captures
+are 780 px wide, shot at 2x so they stay legible zoomed in.
+
+They are produced by the **Capture screenshots** workflow
+(`.github/workflows/screenshots.yml`), run from the Actions tab. It curls the
+live URL first and refuses to capture unless it answers 200, clears
+`screenshots/` so no file survives under a stale name, then commits the result
+as `github-actions[bot]`. Re-run it after any change that alters how a page
+looks — a capture of localhost is not evidence about what GitHub Pages serves,
+which is the whole reason it runs there.
+
+`tools/screenshots.cjs` is the same script either way: point `BASE_URL` at a
+local server to preview a change before pushing it, and let the workflow take
+the captures that get committed.
