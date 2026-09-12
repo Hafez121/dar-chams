@@ -32,11 +32,12 @@ dar-chams/
 ├── js/
 │   ├── i18n.js         every Arabic string, plus the strings JS builds
 │   └── site.js         language, navigation, scroll reveals, the form
-├── img/                artwork, .webp with a .jpg fallback for each
+├── img/                photographs, .webp with a .jpg fallback for each
+│   └── incoming/       drop originals here; rejected/ holds what was not used
 ├── fonts/              self-hosted woff2 subsets (no Google Fonts request)
 ├── tools/
-│   ├── make_images.py   regenerates the placeholder artwork
-│   ├── fetch-photos.sh  downloads and processes real photography
+│   ├── fetch-photos.sh  resizes originals into the image slots
+│   ├── _process_photo.py  one slot: fit, strip EXIF, WebP + JPEG to budget
 │   ├── screenshots.cjs  captures the review screenshots
 │   └── verify-live.sh   checks the deployed site, not the local copy
 ├── screenshots/        390 px and 1440 px full-page captures, EN and AR
@@ -107,108 +108,52 @@ put the real ones — in the footer of all four pages, in the contact page's
 social row and contact list, and in the `sameAs` and `email` fields of the
 JSON-LD. Do not invent a replacement: confirm the account exists first.
 
-## Swapping in real photography
+## The photographs, and the image slots
 
-Every image slot is already the right shape: the `<img>` carries the exact
-`width` and `height` the layout uses, the WebP is offered first through
-`<picture><source>`, and the JPEG is the fallback. Replacing a photo is a
-file swap — no markup change.
+Nine photographs were delivered; eight are in use and one was rejected (see
+`CREDITS.md`). Every image on the site is a photograph — there are no generated
+illustrations left anywhere.
 
 ```
-img/hero-village   1600×1000   home hero — the village across the valley
-img/house-facade   1200×900    the front of the house, triple-arch window
-img/arch-window     800×1000   interior, triple-arched window (rooms page head)
-img/room-garden    1200×900    a Garden Room
-img/room-arch      1200×900    an Arch Room
-img/room-suite     1200×900    the Liwan, vaulted ceiling
-img/breakfast      1200×800    the breakfast table, from above
-img/terraces       1200×800    olive terraces and dry-stone walls
-img/souk            800×1000   the old souk
-img/stone-stair     800×1000   a village staircase
-img/valley-dusk    1600×900    the valley at dusk
-img/courtyard      1600×700    the courtyard
-img/og-cover       1200×630    social card
+img/hero-valley     940×588    home hero — terraced hillsides in late light
+img/roof-tiles      800×1200   home, "The house" — clay tiles and arched openings
+img/terrace         740×987    home, "A day here" — the terrace through a doorway
+img/room-linen     1100×917    rooms page head — white linen in morning sun
+img/shutters       1160×652    rooms — louvred shutters, a light study
+img/olive-branch    660×990    village — olives on the branch
+img/stone-steps     440×660    village — a village staircase
+img/valley-road    1020×573    village, "Getting here" — the valley on the way up
+img/og-cover       1200×630    social card, cropped from the hero
 ```
 
-With real photographs in a folder, run:
+Three sections carry no photograph, because no photograph of their subject
+exists: the three room types on both the home and rooms pages, the old souk on
+the village page, and the village page head. They run on typography instead.
+Putting one room's picture above another room's description, or a generic
+street above a paragraph about Douma's souk, would be a small lie told nine
+times over.
+
+To replace or add a photograph: drop the file in `img/incoming/` named after
+the slot, then
 
 ```sh
-tools/fetch-photos.sh ~/Downloads/dar-chams-photos
+tools/fetch-photos.sh
 ```
 
-It resizes each file to the dimensions above, strips EXIF, writes a `.webp` and
-a `.jpg` under 150 KB each, and refuses anything that is not a real image. It
-needs either `cwebp` + ImageMagick, or Python with Pillow — it checks and tells
-you which one it found.
+It fits each file to the slot's exact dimensions, strips EXIF, and writes a
+WebP and a JPEG under the byte budget, choosing the highest quality that fits
+and refusing to drop below quality 46. Files matching no slot are listed rather
+than silently ignored. The dimensions above live in one place — the `SLOTS`
+table at the top of that script — and must match the `width`/`height` in the
+markup.
 
-Then update `CREDITS.md` with the photographer and source URL for each file.
-
-## Decisions taken without asking
-
-- **Four pages, no more.** The souk, the seasons and the directions live inside
-  `village.html` rather than becoming thin pages of their own.
-- **No hero overlay, no Book Now band, no testimonial slider, no icon cards.**
-  The hero is an asymmetric split — type on one side, one large image bleeding
-  to the opposite edge. The room previews sit on a twelve-column grid at three
-  different widths so they do not read as a card row.
-- **Illustrated map instead of an embedded one.** A Google Maps iframe is
-  roughly 300 KB of third-party JavaScript, breaks offline, and looks like
-  every other hotel site. `contact.html` draws the road from Beirut as inline
-  SVG, with the coordinates and an OpenStreetMap link beside it.
-- **System sans for body text, one web serif for display.** Cormorant Garamond
-  is used above about 20 px only, where its thin strokes are an asset. Body
-  text is the platform UI font: 0 KB and correct on every device.
-- **Self-hosted fonts.** Google Fonts would add two DNS lookups and a
-  render-blocking stylesheet on a 3G connection. The woff2 subsets are in
-  `fonts/` and preloaded.
-- **Western digits in the Arabic text.** That is what Lebanese price lists,
-  road signs and hotel invoices use.
-- **Prices, policies and distances were invented once and used everywhere.**
-  $95 / $135 / $175 / $185, breakfast 8:00–10:30, check-in 15:00, check-out
-  11:00, two-night weekend minimum, free cancellation to seven days. If you
-  change one, change it in `rooms.html`, `index.html`, `contact.html`, the
-  `<select>` options and the JSON-LD.
-
-## Checks that were run
-
-Chromium, driven headlessly (`tools/screenshots.cjs` uses the same setup):
-
-- no console errors and no failed requests on any page, in either language;
-- every internal link and every `#anchor` resolves;
-- every image loads and renders, and every `<img>` has `width`, `height` and
-  `alt`;
-- one `<h1>` per page and no skipped heading levels;
-- no horizontal scroll at 360, 390, 414, 768, 1024, 1440 px, in both languages;
-- every standalone tap target at least 44 px tall; no text below 15 px;
-- every text colour at 4.5:1 or better against its real background
-  (3:1 for large type);
-- the mobile menu moves focus into the panel, traps Tab, closes on Escape and
-  returns focus to the button;
-- the enquiry form rejects an empty submission, a past date and a check-out
-  before check-in, and the composed WhatsApp URL decodes to a clean sentence;
-- the Arabic build leaves no English strings on the page;
-- page weight, uncompressed and with fonts: 210–287 KB in English,
-  379 KB for the Arabic home page. Budget was 500 KB;
-- the whole suite above run twice, once with the site served from the domain
-  root and once from a `/dar-chams/` subpath, to prove no path depends on where
-  the site is mounted.
-
-## Running it
-
-```sh
-python3 -m http.server 8123
-# then open http://127.0.0.1:8123/
-```
-
-To rehearse the GitHub Pages subpath instead, serve the folder above this one
-and open `http://127.0.0.1:8123/dar-chams/`. Both work, and both are checked.
-
-Opening `index.html` straight off the file system works as well — images, the
-scroll reveals, the enquiry form and the Arabic toggle all behave — with one
-exception no static site can avoid: browsers refuse to load self-hosted
-webfonts over `file://` (a CORS check against the `null` origin), so the type
-falls back to the system serif and sans and the console shows two blocked font
-requests. Serve it over HTTP to see it as designed.
+**Why the images are the size they are.** The binding constraint is the 500 KB
+per-page budget, not a per-file number. A page carries up to three photographs
+plus ~115 KB of fonts and ~70 KB of markup, CSS and JS, so each photograph gets
+about 95 KB. Dense subjects cost more per pixel than smooth ones: the aerial
+hero and the stone staircase are mostly high-frequency texture, which is why
+they are the smallest images on the site. Raising a slot's dimensions without
+re-checking page weight will break the budget.
 
 ## Verifying the deployed site
 

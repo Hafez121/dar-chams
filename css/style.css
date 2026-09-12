@@ -33,12 +33,6 @@
   font-weight: 600; font-style: normal; font-display: swap;
   unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFF;
 }
-@font-face {
-  font-family: "Noto Naskh Arabic";
-  src: url("../fonts/naskh-400.woff2") format("woff2");
-  font-weight: 400; font-style: normal; font-display: swap;
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFF;
-}
 
 /* ----------------------------------------------------------------- tokens */
 :root {
@@ -58,7 +52,7 @@
 
   --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display-ar: "Noto Naskh Arabic", "Cormorant Garamond", Georgia, serif;
+  --font-display-ar: "IBM Plex Sans Arabic", system-ui, sans-serif;
   --font-body-ar: "IBM Plex Sans Arabic", system-ui, sans-serif;
 
   --lh-body: 1.62;
@@ -401,19 +395,20 @@ a:hover { color: var(--terracotta-d); }
 }
 
 /* ------------------------------------------------------------- room cards */
-.roomgrid { display: grid; gap: clamp(2rem, 4vw, 2.75rem); }
+/* No wide photograph of any room type exists, so the preview is typographic:
+   a ruled index rather than three picture cards. */
+.roomgrid { display: grid; gap: 0; }
+.roomcard { border-block-start: var(--rule); }
+.roomcard:last-child { border-block-end: var(--rule); }
 .roomcard__link {
   display: block;
   color: inherit;
   text-decoration: none;
+  padding-block: 1.6rem;
+  transition: opacity .2s ease;
 }
-.roomcard img {
-  inline-size: 100%;
-  border-radius: var(--radius);
-  transition: filter .4s ease;
-}
-.roomcard__link:hover img { filter: brightness(1.04) saturate(1.05); }
-.roomcard h3 { margin-block: 1.1rem .35rem; }
+.roomcard__link:hover { opacity: .72; }
+.roomcard h3 { margin-block: 0 .35rem; }
 .roomcard__count {
   font-family: var(--font-body);
   font-size: .9375rem;
@@ -426,7 +421,7 @@ a:hover { color: var(--terracotta-d); }
 .roomcard__meta { color: var(--ink-2); font-size: 1rem; margin-block-end: .6rem; }
 .price { margin: 0; font-size: 1rem; color: var(--ink); }
 .price__num { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; }
-[dir="rtl"] .price__num { font-family: var(--font-display); }
+[dir="rtl"] .price__num { font-family: var(--font-display-ar); font-weight: 600; }
 .price__unit { color: var(--ink-2); }
 
 /* ------------------------------------------------------------------- days */
@@ -450,7 +445,12 @@ a:hover { color: var(--terracotta-d); }
 
 /* --------------------------------------------------------- village teaser */
 .village-teaser { display: grid; gap: clamp(1.75rem, 4vw, 3rem); align-items: end; }
-.village-teaser img { inline-size: 100%; border-radius: var(--radius); }
+/* No photograph for this section, so it is set as an editorial pair: the
+   heading holds one column, the copy the other, rather than one thin measure
+   floating in an empty band. */
+.village-teaser--textual { border-block-start: var(--rule); padding-block-start: clamp(1.75rem, 4vw, 2.5rem); }
+.village-teaser--textual h2 { margin-block-end: .5em; }
+.village-teaser--textual .village-teaser__body { max-inline-size: 58ch; }
 
 /* ---------------------------------------------------------- enquiry bands */
 .enquire-band {
@@ -479,7 +479,7 @@ a:hover { color: var(--terracotta-d); }
   color: var(--ink);
   margin-block-end: .4rem;
 }
-[dir="rtl"] .site-foot__name { font-family: var(--font-display-ar); }
+[dir="rtl"] .site-foot__name { font-family: var(--font-display-ar); font-weight: 600; }
 .site-foot__h {
   font-family: var(--font-body);
   font-size: .9375rem;
@@ -542,19 +542,11 @@ a:hover { color: var(--terracotta-d); }
 .page-head .lead { max-inline-size: 58ch; }
 .page-head__media { margin-block-start: clamp(1.75rem, 4vw, 2.75rem); }
 .page-head__media img { inline-size: 100%; border-radius: var(--radius); }
-/* a portrait plate should not be blown up to the full column width */
-.page-head__media--portrait { max-inline-size: 620px; }
-/* landscape plates are cropped to a letterbox so the top of the page is not
-   carried by empty sky */
-.page-head__media:not(.page-head__media--portrait) img {
-  aspect-ratio: 16 / 7;
-  object-fit: cover;
-  object-position: 50% 70%;
-}
+/* The rooms page-head plate is a photograph with its own crop already chosen;
+   it is shown at its natural ratio rather than letterboxed. */
 
 .roomtype { padding-block: var(--section-y); border-block-start: var(--rule); }
 .roomtype__grid { display: grid; gap: clamp(1.75rem, 4vw, 3rem); align-items: start; }
-.roomtype__media img { inline-size: 100%; border-radius: var(--radius); }
 .roomtype__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem 1rem; margin-block-end: 1rem; }
 .roomtype__head h2 { margin: 0; }
 .roomtype__price {
@@ -577,6 +569,10 @@ a:hover { color: var(--terracotta-d); }
 .specs li { display: flex; gap: .6rem; font-size: 1rem; margin: 0; }
 .specs li::before { content: "—"; color: var(--olive); flex: none; }
 
+.photoband { margin-block: var(--section-y) 0; }
+.photoband img { inline-size: 100%; block-size: auto; display: block; }
+.photoband figcaption { margin-block-start: .9rem; }
+
 .ratebox { padding-block: var(--section-y); border-block-start: var(--rule); }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { border-collapse: collapse; inline-size: 100%; min-inline-size: 30rem; font-size: 1rem; }
@@ -592,6 +588,8 @@ thead th { font-size: .9375rem; letter-spacing: var(--ls-eyebrow); text-transfor
 
 /* ---------------------------------------------------------- village page */
 .things { display: grid; gap: clamp(2rem, 4vw, 2.75rem); }
+.thing--lead { max-inline-size: 62ch; margin-block-end: clamp(2rem, 4vw, 3rem); }
+.thing--lead h3 { font-size: clamp(1.45rem, 3.6vw, 1.9rem); }
 .thing img { inline-size: 100%; border-radius: var(--radius); margin-block-end: 1.1rem; }
 .thing h3 { margin-block-end: .35rem; }
 .thing__meta {
@@ -742,15 +740,20 @@ thead th { font-size: .9375rem; letter-spacing: var(--ls-eyebrow); text-transfor
 
 /* ------------------------------------------------------------ right-to-left */
 [dir="rtl"] {
+  /* Redefining the token itself, rather than overriding selector by selector:
+     any rule that reaches for the display face in Arabic gets the Arabic one,
+     including ones added later. Latin digits inside Arabic text were falling
+     through to Cormorant and pulling all 75 KB of it onto every Arabic page. */
+  --font-display: "IBM Plex Sans Arabic", system-ui, sans-serif;
   --lh-body: 1.9;
-  --lh-display: 1.45;
+  --lh-display: 1.5;
   --ls-display: 0;
   --ls-eyebrow: 0;
 }
 [dir="rtl"] body { font-family: var(--font-body-ar); font-size: 1.0625rem; }
 [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
 [dir="rtl"] .brand__name, [dir="rtl"] .daylist__t,
-[dir="rtl"] .roomtype__price { font-family: var(--font-display-ar); font-weight: 400; }
+[dir="rtl"] .roomtype__price { font-family: var(--font-display-ar); font-weight: 600; }
 [dir="rtl"] h1 { font-size: clamp(2rem, 7vw, 3.6rem); }
 [dir="rtl"] h2 { font-size: clamp(1.6rem, 4.4vw, 2.4rem); }
 [dir="rtl"] h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
@@ -802,21 +805,21 @@ thead th { font-size: .9375rem; letter-spacing: var(--ls-eyebrow); text-transfor
   .split--wide-start { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
   .split--wide-end { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
 
-  .roomgrid { grid-template-columns: repeat(12, minmax(0, 1fr)); row-gap: clamp(2.5rem, 5vw, 4rem); }
-  .roomcard--a { grid-column: 1 / span 7; }
-  .roomcard--b { grid-column: 9 / span 4; align-self: end; }
-  .roomcard--c { grid-column: 3 / span 8; }
+  .roomgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 3.5rem); }
+  .roomcard { border-block-end: var(--rule); }
 
-  .village-teaser { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  .village-teaser--textual { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .village-teaser--textual h2 { margin-block-end: 0; }
   .enquire-band { grid-template-columns: minmax(0, 1.4fr) auto; align-items: center; gap: 2.5rem; }
   .enquire-band__actions { justify-content: flex-end; }
 
   .site-foot__grid { grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 3rem; }
 
-  .roomtype__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); }
-  .roomtype:nth-of-type(even) .roomtype__media { order: 2; }
+  .roomtype__grid--textual { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 4vw, 3.5rem); }
+  .roomtype__grid--textual .roomtype__body { grid-column: 1; }
 
   .things { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .things--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .contact-grid {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     gap: clamp(2.5rem, 5vw, 4.5rem);

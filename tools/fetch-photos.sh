@@ -15,6 +15,11 @@
 set -eu
 
 DEST=$(CDPATH= cd -- "$(dirname -- "$0")/../img" && pwd)
+
+# Per-file ceiling. The binding constraint is the 500 KB per-page budget, not
+# this number: a page carries up to three photographs plus 115 KB of fonts and
+# about 70 KB of markup, CSS and JS, so ~100 KB each is what actually fits.
+BUDGET=${BUDGET:-94208}
 SRC=${1:-$DEST/incoming}
 
 if [ ! -d "$SRC" ]; then
@@ -28,19 +33,14 @@ if [ -z "$(find "$SRC" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*
   exit 2
 fi
 
-SLOTS="hero-village:1600:1000
-house-facade:1200:900
-arch-window:800:1000
-room-garden:1200:900
-room-arch:1200:900
-room-suite:1200:900
-breakfast:1200:800
-terraces:1200:800
-souk:800:1000
-stone-stair:800:1000
-valley-dusk:1600:900
-courtyard:1600:700
-og-cover:1200:630"
+SLOTS="hero-valley:940:588
+roof-tiles:800:1200
+terrace:740:987
+room-linen:1100:917
+shutters:1160:652
+olive-branch:660:990
+stone-steps:440:660
+valley-road:1020:573"
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
@@ -50,22 +50,14 @@ have() { command -v "$1" >/dev/null 2>&1; }
 USED=$(mktemp); OVER=$(mktemp); trap 'rm -f "$USED" "$OVER"' EXIT INT TERM
 OVERSIZE=0
 
-if have magick;      then IM="magick";
-elif have convert;   then IM="convert";
-else                      IM=""; fi
-have cwebp && CWEBP=1 || CWEBP=0
-python3 -c "import PIL" 2>/dev/null && PILLOW=1 || PILLOW=0
-
-if [ -z "$IM" ] && [ "$PILLOW" -eq 0 ]; then
-  echo "Neither ImageMagick nor Python Pillow is installed, so nothing can be" >&2
-  echo "resized. Install one of them and run this again:" >&2
-  echo "  Debian/Ubuntu : sudo apt install imagemagick webp" >&2
-  echo "  Arch          : sudo pacman -S imagemagick libwebp" >&2
-  echo "  macOS         : brew install imagemagick webp" >&2
-  echo "  or            : python3 -m pip install pillow" >&2
+if ! python3 -c "import PIL" 2>/dev/null; then
+  echo "Python Pillow is not installed, so nothing can be resized. Install it:" >&2
+  echo "  python3 -m pip install pillow" >&2
+  echo "  Debian/Ubuntu: sudo apt install python3-pil" >&2
+  echo "  Arch         : sudo pacman -S python-pillow" >&2
   exit 1
 fi
-echo "tools: ImageMagick=${IM:-none} cwebp=$CWEBP pillow=$PILLOW"
+echo "encoder: Pillow $(python3 -c 'import PIL;print(PIL.__version__)')"
 
 echo "$SLOTS" | while IFS=: read -r name w h; do
   [ -n "$name" ] || continue
@@ -90,50 +82,9 @@ echo "$SLOTS" | while IFS=: read -r name w h; do
     continue
   fi
 
-  if [ -n "$IM" ]; then
-    $IM "$found" -auto-orient -strip -resize "${w}x${h}^" \
-        -gravity center -extent "${w}x${h}" -quality 82 "$DEST/$name.jpg"
-    if [ "$CWEBP" -eq 1 ]; then
-      cwebp -quiet -q 80 -m 6 -metadata none "$DEST/$name.jpg" -o "$DEST/$name.webp"
-    else
-      $IM "$DEST/$name.jpg" -quality 80 "$DEST/$name.webp"
-    fi
-  else
-    python3 - "$found" "$DEST/$name" "$w" "$h" <<'PY'
-import sys
-from PIL import Image, ImageOps
-src, out, w, h = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
-im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
-im = ImageOps.fit(im, (w, h), Image.LANCZOS, centering=(0.5, 0.5))
-clean = Image.new("RGB", im.size)          # drops every EXIF block
-clean.paste(im)
-clean.save(out + ".jpg", "JPEG", quality=82, optimize=True, progressive=True)
-clean.save(out + ".webp", "WEBP", quality=80, method=6)
-PY
+  if ! python3 "$(dirname -- "$0")/_process_photo.py" "$found" "$DEST/$name" "$w" "$h" "$BUDGET"; then
+    echo x >> "$OVER"
   fi
-
-  # Keep every file under the 150 KB ceiling. The ladder goes down to q=34;
-  # a photograph that will not fit even there is reported, never shipped in
-  # silence at four times the budget.
-  for f in "$DEST/$name.jpg" "$DEST/$name.webp"; do
-    q=82
-    while [ "$(wc -c < "$f")" -gt 153600 ] && [ "$q" -ge 34 ]; do
-      case "$f" in
-        *.webp) if [ "$CWEBP" -eq 1 ]; then cwebp -quiet -q "$q" -m 6 "$DEST/$name.jpg" -o "$f";
-                else python3 -c "from PIL import Image;i=Image.open('$DEST/$name.jpg');i.save('$f','WEBP',quality=$q,method=6)"; fi ;;
-        *)      if [ -n "$IM" ]; then $IM "$f" -quality "$q" "$f";
-                else python3 -c "from PIL import Image;i=Image.open('$f');i.save('$f','JPEG',quality=$q,optimize=True,progressive=True)"; fi ;;
-      esac
-      q=$((q - 6))
-    done
-    kb=$(( $(wc -c < "$f") / 1024 ))
-    if [ "$kb" -gt 150 ]; then
-      printf '  %-14s %-22s %s KB  ** OVER THE 150 KB BUDGET **\n' "$name" "$(basename "$f")" "$kb"
-      echo x >> "$OVER"
-    else
-      printf '  %-14s %-22s %s KB\n' "$name" "$(basename "$f")" "$kb"
-    fi
-  done
 done
 
 # ---------------------------------------------------------------------------
@@ -170,9 +121,9 @@ done
 n_over=$(wc -l < "$OVER" 2>/dev/null | tr -d ' ')
 if [ "${n_over:-0}" -gt 0 ]; then
   echo
-  echo "$n_over file(s) are over the 150 KB budget even at the lowest quality on the"
-  echo "ladder. Do not ship them as they are. Either crop the source tighter, or"
-  echo "reduce the slot's declared dimensions in this script and in the markup."
+  echo "$n_over file(s) will not fit $((BUDGET / 1024)) KB at quality 46 or better."
+  echo "Do not ship them as they are, and do not lower the quality floor: reduce the"
+  echo "slot's declared dimensions here and in the markup, or crop the source tighter."
 fi
 
 echo

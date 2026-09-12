@@ -9,5 +9,6 @@ User-agent: *
 Allow: /dar-chams/
 Disallow: /dar-chams/screenshots/
 Disallow: /dar-chams/tools/
+Disallow: /dar-chams/img/incoming/
 
 Sitemap: https://hafez121.github.io/dar-chams/sitemap.xml

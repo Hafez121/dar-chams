@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://hafez121.github.io/dar-chams/img/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Douma at dusk: limestone houses with red tile roofs on a terraced slope.">
+<meta property="og:image:alt" content="Terraced hillsides above the Batroun valley in late afternoon light, orchards and villages stepping down towards the haze.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The eight rooms — Dar Chams, Douma">
 <meta name="twitter:description" content="Three Garden Rooms, three Arch Rooms and two suites. From $95 a night with breakfast.">
@@ -25,12 +25,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/cormorant-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <script>
 (function(){var d=document.documentElement;d.className+=' js';
 var l=new URLSearchParams(location.search).get('lang')==='ar'?'ar':'en';
 d.lang=l;d.dir=l==='ar'?'rtl':'ltr';d.dataset.lang=l;
+/* Preload the Latin display face only when it will actually be used. A static
+   preload link costs every Arabic visitor 37KB of a font that never renders. */
+if(l!=='ar'){var f=document.createElement('link');f.rel='preload';f.as='font';f.type='font/woff2';f.href='fonts/cormorant-600.woff2';f.crossOrigin='anonymous';document.head.appendChild(f);}
 if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){d.className+=' js-reveal';}})();
 </script>
 </head>
@@ -79,28 +81,20 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       <p class="eyebrow" data-i18n="rooms.eyebrow">The rooms</p>
       <h1 data-i18n="rooms.h1">Eight rooms, and three kinds of morning.</h1>
       <p class="lead" data-i18n="rooms.lead">Every room keeps its original floor and its own shape — no two are quite the same size. All have a private bathroom, cotton sheets, a kettle with village tea, heating in winter, and no television. Rates are per night for two people and include breakfast.</p>
-      <figure class="page-head__media page-head__media--portrait">
+      <figure class="page-head__media">
         <picture>
-          <source srcset="img/arch-window.webp" type="image/webp">
-          <img src="img/arch-window.jpg" width="800" height="1000" fetchpriority="high" decoding="async"
-               alt="Inside an Arch Room: a triple-arched window set in a limestone wall, opening onto green hillside."
+          <source srcset="img/room-linen.webp" type="image/webp">
+          <img src="img/room-linen.jpg" width="1100" height="917" fetchpriority="high" decoding="async"
+               alt="A bed made up in white linen with several pillows and a crumpled duvet, morning sun falling across it in patches through a window out of frame."
                data-i18n-attr="alt:rooms.hero.alt">
         </picture>
-        <figcaption data-i18n="rooms.hero.caption">The triple arch of room Qamar, first floor, looking south down the valley.</figcaption>
+        <figcaption data-i18n="rooms.hero.caption">White linen and early sun. The rooms differ in size and outlook; the bed is the same in all eight.</figcaption>
       </figure>
     </div>
   </section>
 
   <section class="roomtype reveal" id="garden" aria-labelledby="gardenHead">
-    <div class="wrap roomtype__grid">
-      <figure class="roomtype__media">
-        <picture>
-          <source srcset="img/room-garden.webp" type="image/webp">
-          <img src="img/room-garden.jpg" width="1200" height="900" loading="lazy" decoding="async"
-               alt="A Garden Room: pale plaster walls, a wooden headboard, an olive throw and a shuttered window onto the garden."
-               data-i18n-attr="alt:rooms.garden.alt">
-        </picture>
-      </figure>
+    <div class="wrap roomtype__grid roomtype__grid--textual">
       <div class="roomtype__body">
         <div class="roomtype__head">
           <h2 id="gardenHead" data-i18n="rooms.garden.name">Garden Rooms</h2>
@@ -125,15 +119,7 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
   </section>
 
   <section class="roomtype reveal" id="arch" aria-labelledby="archHead">
-    <div class="wrap roomtype__grid">
-      <figure class="roomtype__media">
-        <picture>
-          <source srcset="img/room-arch.webp" type="image/webp">
-          <img src="img/room-arch.jpg" width="1200" height="900" loading="lazy" decoding="async"
-               alt="An Arch Room: a triple-arched window above the valley, a terracotta blanket folded across the bed."
-               data-i18n-attr="alt:rooms.arch.alt">
-        </picture>
-      </figure>
+    <div class="wrap roomtype__grid roomtype__grid--textual">
       <div class="roomtype__body">
         <div class="roomtype__head">
           <h2 id="archHead" data-i18n="rooms.arch.name">Arch Rooms</h2>
@@ -158,15 +144,7 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
   </section>
 
   <section class="roomtype reveal" id="suites" aria-labelledby="suitesHead">
-    <div class="wrap roomtype__grid">
-      <figure class="roomtype__media">
-        <picture>
-          <source srcset="img/room-suite.webp" type="image/webp">
-          <img src="img/room-suite.jpg" width="1200" height="900" loading="lazy" decoding="async"
-               alt="The Liwan suite under its vaulted ceiling, with the valley framed in three arches."
-               data-i18n-attr="alt:rooms.suites.alt">
-        </picture>
-      </figure>
+    <div class="wrap roomtype__grid roomtype__grid--textual">
       <div class="roomtype__body">
         <div class="roomtype__head">
           <h2 id="suitesHead" data-i18n="rooms.suites.name">Two suites</h2>
@@ -188,6 +166,18 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       </div>
     </div>
   </section>
+
+  <!-- The one interior detail in the set. It is a light study, not a picture of
+       a particular room, and the caption says so. -->
+  <figure class="photoband reveal">
+    <picture>
+      <source srcset="img/shutters.webp" type="image/webp">
+      <img src="img/shutters.jpg" width="1160" height="652" loading="lazy" decoding="async"
+           alt="Wooden louvred shutters across a window seen from inside, warm daylight coming through the angled slats."
+           data-i18n-attr="alt:rooms.band.alt">
+    </picture>
+    <figcaption class="wrap" data-i18n="rooms.band.caption">Shutters closed against the afternoon. Every room has them; how much light you let in is up to you.</figcaption>
+  </figure>
 
   <section class="ratebox reveal" id="rates" aria-labelledby="ratesHead">
     <div class="wrap">

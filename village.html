@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://hafez121.github.io/dar-chams/img/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Douma at dusk: limestone houses with red tile roofs on a terraced slope.">
+<meta property="og:image:alt" content="Terraced hillsides above the Batroun valley in late afternoon light, orchards and villages stepping down towards the haze.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Douma — the village around Dar Chams">
 <meta name="twitter:description" content="The old souk, the olive terraces and the road up from Beirut. Douma, at 1,150 metres in North Lebanon.">
@@ -25,12 +25,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/cormorant-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <script>
 (function(){var d=document.documentElement;d.className+=' js';
 var l=new URLSearchParams(location.search).get('lang')==='ar'?'ar':'en';
 d.lang=l;d.dir=l==='ar'?'rtl':'ltr';d.dataset.lang=l;
+/* Preload the Latin display face only when it will actually be used. A static
+   preload link costs every Arabic visitor 37KB of a font that never renders. */
+if(l!=='ar'){var f=document.createElement('link');f.rel='preload';f.as='font';f.type='font/woff2';f.href='fonts/cormorant-600.woff2';f.crossOrigin='anonymous';document.head.appendChild(f);}
 if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){d.className+=' js-reveal';}})();
 </script>
 </head>
@@ -79,15 +81,6 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       <p class="eyebrow" data-i18n="village.eyebrow">Douma, Batroun district</p>
       <h1 data-i18n="village.h1">Six hundred red roofs on a horseshoe of hillside.</h1>
       <p class="lead" data-i18n="village.lead">Douma sits at 1,150 metres, arranged in a curve around its own valley so that every house looks at every other house. It has been a market town since the eighteenth century, it empties in February and fills in August, and it has never once been in a hurry.</p>
-      <figure class="page-head__media">
-        <picture>
-          <source srcset="img/valley-dusk.webp" type="image/webp">
-          <img src="img/valley-dusk.jpg" width="1600" height="900" fetchpriority="high" decoding="async"
-               alt="The valley below Douma at dusk, ridges fading into each other under a warm sky."
-               data-i18n-attr="alt:home.village.alt">
-        </picture>
-        <figcaption data-i18n="village.hero.caption">Looking south-east from the top of the village, about half past six in October.</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -97,23 +90,18 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
         <h2 id="doingHead" data-i18n="village.doing.h2">What people actually do here</h2>
         <p class="section__lede" data-i18n="village.doing.lede">Not much, on purpose. These are the three things everyone ends up doing anyway.</p>
       </header>
-      <div class="things">
+      <div class="thing thing--lead">
+        <p class="thing__meta" data-i18n="village.souk.meta">Four minutes on foot</p>
+        <h3 data-i18n="village.souk.h3">The old souk</h3>
+        <p data-i18n="village.souk.p">One long street of stone shopfronts, built when Douma traded silk and never rebuilt since. About sixty are still open: a saddle-maker, two carpenters, a printer with a hand-set press, the sweet shop with the good knefeh. Quietest before ten, busiest on Sunday after church.</p>
+      </div>
+
+      <div class="things things--two">
         <article class="thing">
           <picture>
-            <source srcset="img/souk.webp" type="image/webp">
-            <img src="img/souk.jpg" width="800" height="1000" loading="lazy" decoding="async"
-                 alt="The old souk of Douma: a narrow cobbled street between stone arcades, with awnings over the shopfronts."
-                 data-i18n-attr="alt:village.souk.alt">
-          </picture>
-          <p class="thing__meta" data-i18n="village.souk.meta">Four minutes on foot</p>
-          <h3 data-i18n="village.souk.h3">The old souk</h3>
-          <p data-i18n="village.souk.p">One long street of stone shopfronts, built when Douma traded silk and never rebuilt since. About sixty are still open: a saddle-maker, two carpenters, a printer with a hand-set press, the sweet shop with the good knefeh. Quietest before ten, busiest on Sunday after church.</p>
-        </article>
-        <article class="thing">
-          <picture>
-            <source srcset="img/terraces.webp" type="image/webp">
-            <img src="img/terraces.jpg" width="1200" height="800" loading="lazy" decoding="async"
-                 alt="Olive terraces stepping down a hillside behind dry-stone retaining walls, with a small stone hut among the trees."
+            <source srcset="img/olive-branch.webp" type="image/webp">
+            <img src="img/olive-branch.jpg" width="660" height="990" loading="lazy" decoding="async"
+                 alt="Olive branches against a pale sky, the green unripe fruit clustered along the stems in low warm light."
                  data-i18n-attr="alt:village.terraces.alt">
           </picture>
           <p class="thing__meta" data-i18n="village.terraces.meta">Two hours, easy, down and back</p>
@@ -122,9 +110,9 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
         </article>
         <article class="thing">
           <picture>
-            <source srcset="img/stone-stair.webp" type="image/webp">
-            <img src="img/stone-stair.jpg" width="800" height="1000" loading="lazy" decoding="async"
-                 alt="A worn limestone staircase climbing between village houses, with potted geraniums on the steps."
+            <source srcset="img/stone-steps.webp" type="image/webp">
+            <img src="img/stone-steps.jpg" width="440" height="660" loading="lazy" decoding="async"
+                 alt="A flight of worn stone steps climbing between dry-stone retaining walls, overhung by trees, with sunlight falling across the upper treads."
                  data-i18n-attr="alt:village.stairs.alt">
           </picture>
           <p class="thing__meta" data-i18n="village.stairs.meta">All afternoon, if you like</p>
@@ -158,12 +146,12 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       </div>
       <figure class="split__media">
         <picture>
-          <source srcset="img/courtyard.webp" type="image/webp">
-          <img src="img/courtyard.jpg" width="1600" height="700" loading="lazy" decoding="async"
-               alt="The arcaded courtyard of Dar Chams with its stone basin and two olive trees in pots."
+          <source srcset="img/valley-road.webp" type="image/webp">
+          <img src="img/valley-road.jpg" width="1020" height="573" loading="lazy" decoding="async"
+               alt="A wooded valley in the Lebanese mountains, houses of the village strung along the ridge above the treeline, terraced ground dropping away below."
                data-i18n-attr="alt:village.courtyard.alt">
         </picture>
-        <figcaption data-i18n="village.courtyard.caption">The courtyard, where the car stops and the noise does too.</figcaption>
+        <figcaption data-i18n="village.courtyard.caption">The last climb: the road works its way up the side of the valley to the village on the ridge.</figcaption>
       </figure>
     </div>
   </section>

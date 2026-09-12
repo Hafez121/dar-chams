@@ -25,13 +25,15 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/cormorant-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/print.css" media="print">
 <script>
 (function(){var d=document.documentElement;d.className+=' js';
 var l=new URLSearchParams(location.search).get('lang')==='ar'?'ar':'en';
 d.lang=l;d.dir=l==='ar'?'rtl':'ltr';d.dataset.lang=l;
+/* Preload the Latin display face only when it will actually be used. A static
+   preload link costs every Arabic visitor 37KB of a font that never renders. */
+if(l!=='ar'){var f=document.createElement('link');f.rel='preload';f.as='font';f.type='font/woff2';f.href='fonts/cormorant-600.woff2';f.crossOrigin='anonymous';document.head.appendChild(f);}
 if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){d.className+=' js-reveal';}})();
 </script>
 </head>

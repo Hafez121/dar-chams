@@ -2,27 +2,55 @@
 
 What is finished, what is not, and what only a human can decide.
 
-## The one thing that must change before this is shown as finished
+## What is still open on the photography
 
-**The photography.** Every image is an original illustration, not a photograph.
-The build environment blocked every stock-photo host at the egress proxy —
-Unsplash, Pexels, Wikimedia, Pixabay, Flickr, Openverse, picsum all returned
-`403` to the CONNECT; only Google Fonts and GitHub were reachable. The choice
-was between grey boxes and drawing something in the site's palette at the exact
-dimensions the layout needs, and I drew.
+Nine photographs were delivered and eight are in use. Every generated
+illustration has been deleted. Three things remain:
 
-The markup is already correct for real photographs: exact `width`/`height`,
-WebP first with a JPEG fallback, `fetchpriority="high"` above the fold and
-`loading="lazy"` below it. Swapping is a file replace, not a code change.
-`tools/fetch-photos.sh` does the resize, the EXIF strip and the WebP/JPEG pair;
-`README.md` lists every slot and its dimensions; `CREDITS.md` has the table to
-fill in.
+1. **Four of the eight are unattributed.** `hero-valley` (the home page hero),
+   `terrace`, `stone-steps` and `valley-road` arrived with generic filenames,
+   so there is no photographer and no source URL for them. The other four kept
+   their download filenames and are credited in `CREDITS.md`. Identify the four
+   before this is shown publicly — the hero above all.
+2. **The reconstructed URLs are unverified.** This environment cannot reach
+   Unsplash or Pexels, so every link in `CREDITS.md` was rebuilt from a
+   filename and none has been opened. Check them.
+3. **`stone-wall.jpg` was rejected** and sits in `img/incoming/rejected/`. It
+   carries a burned-in "Nicole Moore PHOTOGRAPHY" watermark, and it is not
+   Lebanese architecture — grey fieldstone, a brick arch, cedar shingles and
+   maple leaves. Both reasons are in `CREDITS.md`.
 
-The prompt also asked for `cwebp` or ImageMagick and said to say so if neither
-was installed: **neither was installed.** The conversion is done with Python and
-Pillow instead, which produced WebP files of 7–35 KB and JPEGs of 24–82 KB, all
-well under the 150 KB ceiling. `tools/fetch-photos.sh` prefers `cwebp` and
-ImageMagick when they exist and falls back to Pillow when they do not.
+## Where the copy and the photographs disagree
+
+The site makes specific visual claims. Most have no photograph behind them,
+which is fine. These are the ones where a photograph is now adjacent to a claim
+it does not support. **None of the copy has been changed** — that is the
+owner's call, not mine.
+
+| Claim | Where | What the photograph shows |
+|---|---|---|
+| "the same red tiles from Marseille" | home, *The house* | `roof-tiles` shows curved barrel tiles. Marseille tiles are flat and interlocking with a distinct double-groove profile. These are not those. |
+| "the same limestone" | home, *The house*, directly beside the photograph | The wall under that roof is white render, not coursed limestone. No photograph in the set shows limestone masonry. |
+| "triple-arched windows" | home and rooms, repeatedly | The only arches in the set are the two round-headed openings in `roof-tiles`. Nothing shows a triple arch. |
+| "olive-green shutters" | previously in the home alt text, now removed | `shutters` shows natural varnished wood. The alt text was rewritten to match; the claim no longer appears anywhere in the copy. |
+| "six hundred houses with red roofs" | home teaser and the village page H1 | `valley-road` shows a village of modern white buildings. This is why it is on *Getting here* and not under either of those lines, and why the village page head now carries no photograph at all. |
+
+Three ways to close the gap: change the copy, get photographs that support it,
+or leave both as they are and accept that a careful reader may notice. The
+cheapest honest fix is to drop "from Marseille" and "the same limestone" from
+the one paragraph on the home page; everything else is a claim without a
+picture, which is not a contradiction.
+
+## Sections that now carry no photograph
+
+Deliberate, not missing:
+
+- the three room types, on both the home page and the rooms page — there is no
+  wide interior photograph of any of them;
+- the old souk on the village page — no photograph of the souk exists, so it
+  leads its section as text;
+- the village page head — its H1 claims six hundred red roofs and the only
+  village-wide photograph contradicts it.
 
 ## Decisions a human has to make
 
@@ -91,6 +119,11 @@ makes no claim about any of them beyond distances and directions.
 
 ## Known limits, deliberately accepted
 
+- **Arabic lost its second typeface.** Headings used Noto Naskh Arabic, a
+  serif, against IBM Plex Sans Arabic for text. That pairing cost 92 KB — more
+  than a whole photograph — on every Arabic page. Arabic now uses Plex at two
+  weights throughout. If the budget ever loosens, the Naskh pairing is worth
+  restoring; it read better.
 - **Self-hosted fonts do not load over `file://`.** Every browser blocks font
   fetches from the `null` origin, so opening the HTML straight off disk falls
   back to system type and logs two blocked requests. Everything else — images,

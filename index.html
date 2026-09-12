@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://hafez121.github.io/dar-chams/img/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Douma at dusk: limestone houses with red tile roofs on a terraced slope.">
+<meta property="og:image:alt" content="Terraced hillsides above the Batroun valley in late afternoon light, orchards and villages stepping down towards the haze.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dar Chams — a stone guesthouse in Douma, North Lebanon">
 <meta name="twitter:description" content="An 1874 stone house in the mountains of North Lebanon. Eight rooms, from $95 a night.">
@@ -25,7 +25,6 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/cormorant-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <script>
 /* Language is carried in the URL (?lang=ar) - no localStorage. Runs before paint
@@ -33,6 +32,9 @@
 (function(){var d=document.documentElement;d.className+=' js';
 var l=new URLSearchParams(location.search).get('lang')==='ar'?'ar':'en';
 d.lang=l;d.dir=l==='ar'?'rtl':'ltr';d.dataset.lang=l;
+/* Preload the Latin display face only when it will actually be used. A static
+   preload link costs every Arabic visitor 37KB of a font that never renders. */
+if(l!=='ar'){var f=document.createElement('link');f.rel='preload';f.as='font';f.type='font/woff2';f.href='fonts/cormorant-600.woff2';f.crossOrigin='anonymous';document.head.appendChild(f);}
 if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){d.className+=' js-reveal';}})();
 </script>
 </head>
@@ -92,9 +94,9 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       </div>
       <figure class="hero__media">
         <picture>
-          <source srcset="img/hero-village.webp" type="image/webp">
-          <img src="img/hero-village.jpg" width="1600" height="1000" fetchpriority="high" decoding="async"
-               alt="Douma at the end of the day: limestone houses with red tile roofs stacked on a terraced slope above a hazy valley."
+          <source srcset="img/hero-valley.webp" type="image/webp">
+          <img src="img/hero-valley.jpg" width="940" height="588" fetchpriority="high" decoding="async"
+               alt="Looking down over terraced hillsides in late afternoon light: orchards and cultivated terraces stepping down the slope, small villages scattered across the ridges, and the valley fading into haze."
                data-i18n-attr="alt:home.hero.alt">
         </picture>
       </figure>
@@ -112,12 +114,12 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
     <div class="wrap split split--wide-start">
       <figure class="split__media">
         <picture>
-          <source srcset="img/house-facade.webp" type="image/webp">
-          <img src="img/house-facade.jpg" width="1200" height="900" loading="lazy" decoding="async"
-               alt="The front of Dar Chams: coursed limestone, a red tile roof, olive-green shutters and a central triple-arched window."
+          <source srcset="img/roof-tiles.webp" type="image/webp">
+          <img src="img/roof-tiles.jpg" width="800" height="1200" loading="lazy" decoding="async"
+               alt="A roof of curved red clay tiles against a deep blue sky, with a small dormer window set into it and two round-headed arched openings in the wall below."
                data-i18n-attr="alt:home.house.alt">
         </picture>
-        <figcaption data-i18n="home.house.caption">The south front, rebuilt stone by stone in 2021.</figcaption>
+        <figcaption data-i18n="home.house.caption">Red clay tiles and round-headed openings — the roofline of the district.</figcaption>
       </figure>
       <div class="split__body">
         <h2 data-i18n="home.house.h2">The house</h2>
@@ -133,22 +135,18 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
     </div>
   </section>
 
-  <!-- Rooms preview: staggered editorial grid, not three identical cards -->
+  <!-- Rooms preview. No wide photograph of any of the three room types was
+       delivered, so these carry no image: a borrowed interior would be a lie
+       about which room you are looking at. They run on type instead. -->
   <section class="section section--rooms reveal" aria-labelledby="roomsHead">
     <div class="wrap">
       <header class="section__head">
         <h2 id="roomsHead" data-i18n="home.rooms.h2">Eight rooms, three kinds</h2>
         <p class="section__lede" data-i18n="home.rooms.lede">Every room has its own bathroom, a view of something green, and no television. Rates are per night for two people with breakfast.</p>
       </header>
-      <div class="roomgrid">
+      <div class="roomgrid roomgrid--textual">
         <article class="roomcard roomcard--a">
           <a class="roomcard__link" href="rooms.html#garden">
-            <picture>
-              <source srcset="img/room-garden.webp" type="image/webp">
-              <img src="img/room-garden.jpg" width="1200" height="900" loading="lazy" decoding="async"
-                   alt="A Garden Room: pale plaster walls, a wooden headboard, an olive throw and a shuttered window onto the garden."
-                   data-i18n-attr="alt:rooms.garden.alt">
-            </picture>
             <h3><span data-i18n="rooms.garden.name">Garden Rooms</span> <span class="roomcard__count" data-i18n="rooms.garden.count">three</span></h3>
             <p class="roomcard__meta"><span data-i18n="rooms.garden.size">18 m² · ground floor · own door to the garden</span></p>
             <p class="price"><span class="price__num">$95</span> <span class="price__unit" data-i18n="price.unit">a night</span></p>
@@ -156,12 +154,6 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
         </article>
         <article class="roomcard roomcard--b">
           <a class="roomcard__link" href="rooms.html#arch">
-            <picture>
-              <source srcset="img/room-arch.webp" type="image/webp">
-              <img src="img/room-arch.jpg" width="1200" height="900" loading="lazy" decoding="async"
-                   alt="An Arch Room: a triple-arched window above the valley, a terracotta blanket folded across the bed."
-                   data-i18n-attr="alt:rooms.arch.alt">
-            </picture>
             <h3><span data-i18n="rooms.arch.name">Arch Rooms</span> <span class="roomcard__count" data-i18n="rooms.arch.count">three</span></h3>
             <p class="roomcard__meta"><span data-i18n="rooms.arch.size">26 m² · first floor · triple-arched window</span></p>
             <p class="price"><span class="price__num">$135</span> <span class="price__unit" data-i18n="price.unit">a night</span></p>
@@ -169,12 +161,6 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
         </article>
         <article class="roomcard roomcard--c">
           <a class="roomcard__link" href="rooms.html#suites">
-            <picture>
-              <source srcset="img/room-suite.webp" type="image/webp">
-              <img src="img/room-suite.jpg" width="1200" height="900" loading="lazy" decoding="async"
-                   alt="The Liwan suite under its vaulted ceiling, with the valley framed in three arches."
-                   data-i18n-attr="alt:rooms.suites.alt">
-            </picture>
             <h3><span data-i18n="rooms.suites.name">Two suites</span> <span class="roomcard__count" data-i18n="rooms.suites.count">the Liwan and the Roof Room</span></h3>
             <p class="roomcard__meta"><span data-i18n="rooms.suites.size">34–38 m² · sitting room · space for a third bed</span></p>
             <p class="price"><span class="price__num">$175–$185</span> <span class="price__unit" data-i18n="price.unit">a night</span></p>
@@ -199,29 +185,21 @@ if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: red
       </div>
       <figure class="split__media">
         <picture>
-          <source srcset="img/breakfast.webp" type="image/webp">
-          <img src="img/breakfast.jpg" width="1200" height="800" loading="lazy" decoding="async"
-               alt="Breakfast laid out from above: small plates of labneh, zaatar, tomatoes and jam, flatbread on a board and a coffee pot."
+          <source srcset="img/terrace.webp" type="image/webp">
+          <img src="img/terrace.jpg" width="740" height="987" loading="lazy" decoding="async"
+               alt="Looking out through an open doorway onto a sunlit terrace: a terracotta-tiled floor, wrought-iron tables and chairs under white parasols, and the branches of a tree across the foreground."
                data-i18n-attr="alt:home.day.alt">
         </picture>
-        <figcaption data-i18n="home.day.caption">Breakfast, served until half past ten. Nobody hurries you.</figcaption>
+        <figcaption data-i18n="home.day.caption">The terrace, where breakfast is laid until half past ten.</figcaption>
       </figure>
     </div>
   </section>
 
   <!-- Village teaser -->
   <section class="section section--village reveal" aria-labelledby="villageHead">
-    <div class="wrap village-teaser">
-      <figure class="village-teaser__media">
-        <picture>
-          <source srcset="img/valley-dusk.webp" type="image/webp">
-          <img src="img/valley-dusk.jpg" width="1600" height="900" loading="lazy" decoding="async"
-               alt="The valley below Douma at dusk, ridges fading into each other under a warm sky."
-               data-i18n-attr="alt:home.village.alt">
-        </picture>
-      </figure>
+    <div class="wrap village-teaser village-teaser--textual">
+      <h2 id="villageHead" data-i18n="home.village.h2">Douma is the reason to come</h2>
       <div class="village-teaser__body">
-        <h2 id="villageHead" data-i18n="home.village.h2">Douma is the reason to come</h2>
         <p data-i18n="home.village.p1">Six hundred houses with red roofs, arranged around a horseshoe of terraced hillside at 1,150 metres. A souk that has worked without interruption since the 1800s. The six-thousand-year-old olive trees of Bchaaleh, fifteen minutes away. The Baatara gorge waterfall, thirty-five.</p>
         <p class="section__more"><a class="link-arrow" href="village.html"><span data-i18n="home.village.more">What to do, and how to get here</span><span class="arrow" aria-hidden="true">→</span></a></p>
       </div>

@@ -1,25 +1,32 @@
-# Drop real photographs here
+# Photograph originals
 
-Name each file after the slot it fills — `hero-village.jpg`, `room-arch.jpg`,
-`souk.jpg` and so on. The full list of slots, with the dimensions the markup
-declares, is in the project `README.md`.
+The full-size files as delivered. Nothing here is served by the site — the
+pipeline reads from here and writes sized copies into `img/`. `robots.txt`
+keeps crawlers out of this directory.
 
-Then run, from the repository root:
+Name each file after the slot it fills. The slots, with the dimensions the
+markup declares, are listed in the project `README.md` and defined once in the
+`SLOTS` table at the top of `tools/fetch-photos.sh`:
+
+```
+hero-valley  roof-tiles  terrace  room-linen
+shutters     olive-branch  stone-steps  valley-road
+```
+
+Then, from the repository root:
 
 ```sh
 tools/fetch-photos.sh
 ```
 
-It resizes and centre-crops each photograph to the exact dimensions the layout
-uses, strips EXIF, writes a `.webp` and a `.jpg` under 150 KB each into `img/`,
-and refuses anything that is not really an image. Files whose names match no
-slot are ignored; slots with no matching file keep the illustration that is
-there now.
+It fits each file to its slot, strips EXIF, and writes a WebP and a JPEG under
+the byte budget at the best quality that fits. Files matching no slot are
+listed rather than ignored. Slots with no file keep whatever is in `img/`.
 
-Afterwards: record the photographer and source URL for each file in
-`CREDITS.md`, and re-read the `alt` text of every image you replaced — if a
-photograph shows something other than what the alt text describes, change the
-alt text rather than leaving it wrong.
+`room-linen.jpg` is a hand crop of `linen.jpg`, kept here so the pipeline is
+reproducible; both are left in place. `rejected/` holds delivered files that
+are not used, with the reason recorded in `CREDITS.md`.
 
-This file is a placeholder so the directory exists in git. Delete it once real
-photographs are in.
+Afterwards: add the photographer and source URL to `CREDITS.md`, and re-read
+the `alt` text of anything you replaced — if the photograph shows something
+other than what the alt text says, change the alt text.

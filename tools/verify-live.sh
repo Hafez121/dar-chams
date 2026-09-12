@@ -91,8 +91,10 @@ done
 # -- 4. images are image bytes, not an HTML error page ------------------------
 echo
 echo "4. images return image bytes"
-for f in img/hero-village.webp img/hero-village.jpg img/house-facade.webp \
-         img/room-arch.webp img/og-cover.jpg favicon-32.png; do
+for f in img/hero-valley.webp img/hero-valley.jpg img/roof-tiles.webp \
+         img/terrace.webp img/room-linen.webp img/shutters.webp \
+         img/olive-branch.webp img/stone-steps.webp img/valley-road.webp \
+         img/og-cover.jpg favicon-32.png; do
   url="${BASE}${f}"
   c=$(code_of "$url")
   if [ "$c" != "200" ]; then fail "$f -> $c"; continue; fi
@@ -121,7 +123,7 @@ done
 echo
 echo "5. self-hosted fonts load over https"
 for f in fonts/cormorant-400.woff2 fonts/cormorant-600.woff2 \
-         fonts/plexar-400.woff2 fonts/plexar-600.woff2 fonts/naskh-400.woff2; do
+         fonts/plexar-400.woff2 fonts/plexar-600.woff2; do
   url="${BASE}${f}"
   c=$(code_of "$url")
   if [ "$c" != "200" ]; then fail "$f -> $c"; continue; fi
