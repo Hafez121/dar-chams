@@ -20,25 +20,43 @@ illustration has been deleted. Three things remain:
    Lebanese architecture — grey fieldstone, a brick arch, cedar shingles and
    maple leaves. Both reasons are in `CREDITS.md`.
 
-## Where the copy and the photographs disagree
+## Claims and photographs
 
-The site makes specific visual claims. Most have no photograph behind them,
-which is fine. These are the ones where a photograph is now adjacent to a claim
-it does not support. Two of them have since been closed by the owner's decision:
-"from Marseille" and "the same limestone" were dropped from the home page
-paragraph, in both languages. What is left below are claims with no photograph
-behind them, which is not the same thing as a contradiction.
+A claim with no photograph behind it is not a contradiction. Only a claim a
+photograph disproves is. **Nothing on the site is now in the second category.**
 
-| Claim | Where | What the photograph shows |
+### Closed
+
+- **"from Marseille" and "the same limestone"** — dropped from the home page
+  paragraph in both languages. The roof photograph shows curved barrel tiles on
+  a rendered wall, so neither claim survived contact with it. The paragraph now
+  reads "the same red tiles", which the photograph does support.
+- **"olive-green shutters"** — only ever appeared in alt text written for an
+  illustration. The shutters photograph shows natural varnished wood; the alt
+  text was rewritten to match and the claim appears nowhere in the copy.
+
+### A standing placement constraint
+
+**"Six hundred houses with red roofs"** — home teaser, and the village page H1.
+`valley-road` shows a village of modern white buildings. It is the one
+photograph in the set that would disprove a claim if it sat next to it, which
+is why it is on *Getting here* and why the village page head carries no
+photograph at all. Do not move it under either of those lines, and do not put a
+village-wide photograph at the head of that page without checking it against
+the H1 first.
+
+### Claims wanting a photograph
+
+These stand as written. They are unsupported, not contradicted — and they are
+the shot list if anyone commissions more photography:
+
+| Claim | Where | Would need |
 |---|---|---|
-| "triple-arched windows" | home and rooms, repeatedly | The only arches in the set are the two round-headed openings in `roof-tiles`. Nothing shows a triple arch. |
-| "olive-green shutters" | previously in the home alt text, now removed | `shutters` shows natural varnished wood. The alt text was rewritten to match; the claim no longer appears anywhere in the copy. |
-| "six hundred houses with red roofs" | home teaser and the village page H1 | `valley-road` shows a village of modern white buildings. This is why it is on *Getting here* and not under either of those lines, and why the village page head now carries no photograph at all. |
-
-The paragraph now reads "the same red tiles", which the photograph does
-support. The triple arch remains a claim with no picture behind it: fine as it
-stands, and worth a photograph if one ever turns up. Nothing else needs a
-decision.
+| the triple-arched window | home and rooms, repeatedly — the most specific architectural claim on the site | a facade or interior showing three round-headed lights, the middle one taller. The only arches in the set are the two openings in `roof-tiles` |
+| the vaulted breakfast room | home, *The house* | the vaulted room, ideally laid for breakfast — which would also fill the food gap |
+| a Garden Room's own door onto the garden | home and rooms | a ground-floor room with its door open |
+| the eighteen-step stone stair | rooms, twice | the house's own staircase, not a village one |
+| the old souk | village | the arcaded street, which is the single most-cited reason to visit |
 
 ## Sections that now carry no photograph
 
