@@ -24,22 +24,21 @@ illustration has been deleted. Three things remain:
 
 The site makes specific visual claims. Most have no photograph behind them,
 which is fine. These are the ones where a photograph is now adjacent to a claim
-it does not support. **None of the copy has been changed** — that is the
-owner's call, not mine.
+it does not support. Two of them have since been closed by the owner's decision:
+"from Marseille" and "the same limestone" were dropped from the home page
+paragraph, in both languages. What is left below are claims with no photograph
+behind them, which is not the same thing as a contradiction.
 
 | Claim | Where | What the photograph shows |
 |---|---|---|
-| "the same red tiles from Marseille" | home, *The house* | `roof-tiles` shows curved barrel tiles. Marseille tiles are flat and interlocking with a distinct double-groove profile. These are not those. |
-| "the same limestone" | home, *The house*, directly beside the photograph | The wall under that roof is white render, not coursed limestone. No photograph in the set shows limestone masonry. |
 | "triple-arched windows" | home and rooms, repeatedly | The only arches in the set are the two round-headed openings in `roof-tiles`. Nothing shows a triple arch. |
 | "olive-green shutters" | previously in the home alt text, now removed | `shutters` shows natural varnished wood. The alt text was rewritten to match; the claim no longer appears anywhere in the copy. |
 | "six hundred houses with red roofs" | home teaser and the village page H1 | `valley-road` shows a village of modern white buildings. This is why it is on *Getting here* and not under either of those lines, and why the village page head now carries no photograph at all. |
 
-Three ways to close the gap: change the copy, get photographs that support it,
-or leave both as they are and accept that a careful reader may notice. The
-cheapest honest fix is to drop "from Marseille" and "the same limestone" from
-the one paragraph on the home page; everything else is a claim without a
-picture, which is not a contradiction.
+The paragraph now reads "the same red tiles", which the photograph does
+support. The triple arch remains a claim with no picture behind it: fine as it
+stands, and worth a photograph if one ever turns up. Nothing else needs a
+decision.
 
 ## Sections that now carry no photograph
 
